@@ -3,5 +3,5 @@ def apply_tufte_style(ax):
 
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
-    ax.tick_params(direction='out', length=4)
+    ax.tick_params(direction='out', length=0)
     ax.grid(False)
