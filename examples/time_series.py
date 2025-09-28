@@ -4,8 +4,8 @@ from tufteplotlib import time_series
 
 t = np.linspace(0, 10, 10)
 
-y = 5.0*np.sin(t) + 1.0*np.random.randn(10)
+y = 5.0*np.sin(t) + 1.0 * np.random.randn(10)
 
-ax = time_series(t, y)
+ax = time_series(t, y, max_ticks=5)
 
 plt.show()

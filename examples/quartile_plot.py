@@ -5,8 +5,8 @@ from tufteplotlib import quartile_plot
 # Define parameters per category
 params = {
     "Lowenstein": {"mu": 5, "sigma": 3, "n": 100},
-    "Zweig": {"mu": 7, "sigma": 1, "n": 100},
-    "Sneed": {"mu": 6, "sigma": 2, "n": 100}
+    "Sneed": {"mu": 6, "sigma": 2, "n": 100},
+    "Zweig": {"mu": 7, "sigma": 1, "n": 100}
 }
 
 categories = []
