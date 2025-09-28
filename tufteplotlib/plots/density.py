@@ -6,8 +6,8 @@ from scipy.stats import gaussian_kde
 
 def density_plot(data, *,
                  ax=None,
-                 alpha=0.75,
-                 color=[0.0, 0.0, 0.0],
+                 alpha=1.0,
+                 color=[0.4, 0.4, 0.4],
                  show_xlabels=False,
                  show_ylabels=False,
                  tick_width=1.0,
@@ -61,7 +61,7 @@ def density_plot(data, *,
         y_ticks = np.linspace(ymin, ymax, min(max_ticks, 5))
         ax.set_yticks(y_ticks)
         ax.set_yticklabels([f"{ytick:.2f}" for ytick in y_ticks])
-        ax.tick_params(axis='y', length=tick_length, width=tick_width, colors=color)
+        ax.tick_params(axis='y', length=tick_length, width=tick_width)
     else:
         ax.set_yticks([])
         ax.set_yticklabels([])
@@ -72,7 +72,7 @@ def density_plot(data, *,
         x_labels = [np.min(data), np.median(data), np.max(data)]
         ax.set_xticks(x_labels)
         ax.set_xticklabels([f"{val:.2f}" for val in x_labels])
-        ax.tick_params(axis='x', length=tick_length, width=tick_width, colors=color)
+        ax.tick_params(axis='x', length=tick_length, width=tick_width)
     else:
         ax.set_xticks([])
         ax.set_xticklabels([])
