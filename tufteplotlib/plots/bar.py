@@ -8,7 +8,7 @@ def bar_chart(categories, values, *,
               ax=None,
               bar_width=0.6,
               color=[0.4, 0.4, 0.4],
-              label_angle=30,
+              label_angle=0,
               max_ticks=5,
               show_labels=True):
     """
@@ -85,14 +85,17 @@ def bar_chart(categories, values, *,
     # Set x-axis labels
     ax.set_xticks(x_pos)
     
-    ax.set_xticklabels(categories, rotation=label_angle, ha='right')
+    if label_angle == 0:
+        ax.set_xticklabels(categories)
+    else:
+        ax.set_xticklabels(categories, rotation=label_angle, ha='right')
 
     # Hide left spine
     ax.spines['left'].set_visible(False)
 
     # Set bottom spine to span only the bars
-    ax.spines['bottom'].set_bounds(x_pos[0]-bar_width/2,
-                                   x_pos[-1]+bar_width/2)
+    ax.spines['bottom'].set_bounds(x_pos[0]-bar_width/2, x_pos[-1]+bar_width/2)
+    ax.spines['bottom'].set_color(color)
 
     # Apply Tufte style (removes top/right spines)
     apply_tufte_style(ax)
