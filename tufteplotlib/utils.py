@@ -4,19 +4,20 @@ import numpy as np
 ####################################################################################################
 #                    Compute equispaced intermediate ticks between min and max values              #
 ####################################################################################################   
-def _intermediate_ticks(min_val, max_val, max_ticks=5, tol=1e-03):
+def _intermediate_ticks(min_val, max_val, max_ticks=5, tol=1e-03, edge_fraction=0.05):
     """
     Returns tick values including exact min and max,
     plus nicely rounded, equispaced interior ticks.
     
-    Uses a “nice” step size similar to Matplotlib's AutoLocator:
-    step is a power of 10 times 1, 2, or 5.
-    
+    Interior ticks that are too close to min or max (within edge_fraction of range) are removed.
+
     Parameters:
         min_val : float
         max_val : float
         max_ticks : approximate number of interior ticks
-    
+        tol : snapping tolerance to zero
+        edge_fraction : fraction of range near min/max to ignore interior ticks
+
     Returns:
         list of tick values
     """
@@ -46,6 +47,11 @@ def _intermediate_ticks(min_val, max_val, max_ticks=5, tol=1e-03):
     # Remove duplicates and ensure strictly inside min/max
     interior_ticks = [t for t in interior_ticks if min_val < t < max_val]
 
+    # Remove ticks too close to edges
+    range_val = max_val - min_val
+    interior_ticks = [t for t in interior_ticks 
+                      if t - min_val > edge_fraction*range_val and max_val - t > edge_fraction*range_val]
+
     # Combine min, interior ticks, max
     ticks = [min_val] + interior_ticks + [max_val]
     
@@ -53,3 +59,4 @@ def _intermediate_ticks(min_val, max_val, max_ticks=5, tol=1e-03):
     ticks = [0 if abs(t) < tol else t for t in ticks]
     
     return ticks
+
