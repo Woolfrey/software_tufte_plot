@@ -2,30 +2,9 @@ from matplotlib.ticker import MaxNLocator
 import numpy as np
 
 ####################################################################################################
-#                               Get the min and max values in an array                             #
-####################################################################################################
-import numpy as np
-
-def _data_min_max(data):
-    """
-    Returns the minimum and maximum of a list or array of numbers.
-    Works with lists or numpy arrays.
-    """
-    # Convert to array first
-    data = np.asarray(data)
-    
-    # Check for empty data
-    if data.size == 0:
-        raise ValueError("data is empty")
-    
-    min_val = np.min(data)
-    max_val = np.max(data)
-    return min_val, max_val
-
-####################################################################################################
 #                    Compute equispaced intermediate ticks between min and max values              #
 ####################################################################################################   
-def _intermediate_ticks(min_val, max_val, max_ticks=5):
+def _intermediate_ticks(min_val, max_val, max_ticks=5, tol=1e-03):
     """
     Returns tick values including exact min and max,
     plus nicely rounded, equispaced interior ticks.
@@ -68,5 +47,9 @@ def _intermediate_ticks(min_val, max_val, max_ticks=5):
     interior_ticks = [t for t in interior_ticks if min_val < t < max_val]
 
     # Combine min, interior ticks, max
-    return [min_val] + interior_ticks + [max_val]
-
+    ticks = [min_val] + interior_ticks + [max_val]
+    
+    # Snap near-zero values to 0
+    ticks = [0 if abs(t) < tol else t for t in ticks]
+    
+    return ticks
