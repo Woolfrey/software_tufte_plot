@@ -11,4 +11,3 @@ setup(
     description="An extension to matplotlib for creating graphs in the style of Edward Tufte.",
     url="https://github.com/woolfrey/tufteplotlib",
 )
-
