@@ -1,12 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from tufteplotlib import barcode_plot
+from tufteplotlib import quartile_plot
 
 # Define parameters per category
 params = {
-    "Lowenstein": {"mu": 5, "sigma": 3, "n": 50},
-    "Zweig": {"mu": 7, "sigma": 1, "n": 50},
-    "Sneed": {"mu": 6, "sigma": 2, "n": 50}
+    "Lowenstein": {"mu": 5, "sigma": 3, "n": 100},
+    "Zweig": {"mu": 7, "sigma": 1, "n": 100},
+    "Sneed": {"mu": 6, "sigma": 2, "n": 100}
 }
 
 categories = []
@@ -18,5 +18,6 @@ for cat, p in params.items():
     values.extend(data)
 
 # Create the barcode plot
-ax = barcode_plot(categories, values, color='black', alpha=0.7, show_labels=True)
+ax = quartile_plot(categories, values)
+
 plt.show()
