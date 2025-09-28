@@ -1,6 +1,7 @@
+import numpy as np
 import matplotlib.pyplot as plt
 from tufteplotlib.styles import apply_tufte_style
-from tufteplotlib.utils import _data_min_max, _intermediate_ticks
+from tufteplotlib.utils import _intermediate_ticks
 
 def scatter_plot(x, y, ax=None, color='black', s=20, alpha=1.0, margin=0.05, max_ticks=5, **kwargs):
     """
@@ -21,13 +22,18 @@ def scatter_plot(x, y, ax=None, color='black', s=20, alpha=1.0, margin=0.05, max
     """
     if ax is None:
         fig, ax = plt.subplots(figsize=(5*1.618, 5))
+             
+    x = np.asarray(x)
+    y = np.asarray(y)
 
     # Plot scatter points
     ax.scatter(x, y, color=color, s=s, alpha=alpha, **kwargs)
 
     # Compute exact min/max
-    xmin, xmax = _data_min_max(x)
-    ymin, ymax = _data_min_max(y)
+    xmin = x.min()
+    xmax = x.max()
+    ymin = y.min()
+    ymax = y.max()
 
     # Add small margin for axes limits
     x_range = xmax - xmin

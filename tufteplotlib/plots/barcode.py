@@ -1,24 +1,45 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from tufteplotlib.styles import apply_tufte_style
-from tufteplotlib.utils import _data_min_max, _intermediate_ticks
+from tufteplotlib.utils import _intermediate_ticks
 
-def barcode_plot(categories, values, ax=None, color='black', alpha=0.5,
-                 line_width=0.6, line_thickness=2.0, show_labels=False,
+def barcode_plot(categories, values, *,
+                 alpha=0.5,
+                 ax=None,
+                 color='black',
+                 line_thickness=2.0,
+                 line_width=0.4,
+                 show_labels=False,
                  x_label_pad=5):
     """
-    Tufte-style barcode plot: horizontal lines for each data point in each nominal category.
+    Create a Tufte-style barcode plot: horizontal lines for each data point in 
+    each nominal category with minimal ink.
 
-    Parameters:
-        categories : array-like of categorical labels
-        values : array-like of numerical data, same length as categories
-        ax : matplotlib Axes (optional)
-        color : line color
-        alpha : line transparency
-        tick_length : length of y-axis ticks (points)
-        tick_width : width of y-axis ticks (points)
-        show_labels : if True, show min/intermediate/max y-axis labels
-        x_label_pad : padding for x-axis labels (points)
+    Parameters
+    ----------
+    categories : array-like
+        Sequence of categorical labels for the x-axis.
+    values : array-like
+        Numerical data corresponding to each category.
+    alpha : float, optional (default=0.5)
+        Transparency of the lines (0 = fully transparent, 1 = fully opaque).
+    ax : matplotlib.axes.Axes, optional
+        Axes object to draw on. If None, a new figure and axes are created.
+    color : str, optional (default='black')
+        Color of the barcode lines.
+    line_thickness : float, optional (default=2.0)
+        Thickness of each barcode line.
+    line_width : float, optional (default=0.4)
+        Horizontal span of each line in axis units.
+    show_labels : bool, optional (default=False)
+        Whether to show min/intermediate/max y-axis labels.
+    x_label_pad : float, optional (default=5)
+        Padding (in points) for x-axis labels.
+
+    Returns
+    -------
+    ax : matplotlib.axes.Axes
+        The matplotlib axes containing the barcode plot.
     """
     if ax is None:
         fig, ax = plt.subplots(figsize=(5*1.618, 5))
@@ -36,7 +57,8 @@ def barcode_plot(categories, values, ax=None, color='black', alpha=0.5,
         ax.hlines(y, x - line_width/2.0, x + line_width/2.0, color=color, alpha=alpha, linewidth=line_thickness)
 
     # Compute y-axis limits exactly
-    ymin, ymax = _data_min_max(values)
+    ymin = values.min()
+    ymax = values.max()
     ax.set_ylim(ymin, ymax)
 
     # Set x-axis ticks at category positions with labels

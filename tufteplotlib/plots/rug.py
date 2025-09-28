@@ -1,10 +1,44 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from tufteplotlib.styles import apply_tufte_style
-from tufteplotlib.utils import _data_min_max
 
-def rug_plot(x, y, ax=None, color='black', alpha=1.0, margin=0.05,
-             show_labels=False, tick_length=10, tick_width=1.0, label_offset=0.02):
+def rug_plot(x, y, *,
+             alpha=1.0,
+             ax=None,
+             color='black',
+             label_offset=0.02,
+             margin=0.05,
+             show_labels=True,
+             tick_length=10.0,
+             tick_width=1.0):
+    """
+    Create a Tufte-style rug plot with minimal ink.
+
+    Parameters
+    ----------
+    x, y : array-like
+        Coordinates of the rug ticks.
+    alpha : float
+        Transparency of the ticks.
+    ax : matplotlib.axes.Axes, optional
+        Axes to draw on.
+    color : str
+        Tick color.
+    label_offset : float
+        Fractional offset for min/median/max labels.
+    margin : float
+        Fractional margin around data.
+    show_labels : bool
+        Whether to show min/median/max labels.
+    tick_length : float
+        Length of the rug "tassels".
+    tick_width : float
+        Width of the rug "tassels".
+
+    Returns
+    -------
+    ax : matplotlib.axes.Axes
+    """
 
     if ax is None:
         fig, ax = plt.subplots(figsize=(5*1.618, 5))
@@ -16,8 +50,8 @@ def rug_plot(x, y, ax=None, color='black', alpha=1.0, margin=0.05,
     ax.scatter(x, y, color=color, alpha=alpha)
 
     # Compute min/max
-    xmin, xmax = _data_min_max(x)
-    ymin, ymax = _data_min_max(y)
+    xmin, xmax = x.min(), x.max()
+    ymin, ymax = y.min(), y.max()
     x_range = xmax - xmin
     y_range = ymax - ymin
 
@@ -32,33 +66,23 @@ def rug_plot(x, y, ax=None, color='black', alpha=1.0, margin=0.05,
     for spine in ax.spines.values():
         spine.set_visible(False)
 
-    # Set ticks at all data points (barcode effect)
+    # Barcode ticks
     ax.set_xticks(x)
     ax.set_yticks(y)
     ax.set_xticklabels([''] * len(x))
     ax.set_yticklabels([''] * len(y))
-
-    # Customize tick appearance
     ax.tick_params(axis='x', length=tick_length, width=tick_width, colors=color)
     ax.tick_params(axis='y', length=tick_length, width=tick_width, colors=color)
-    
 
-    # x-axis labels
-    x_vals = [np.min(x), np.median(x), np.max(x)]
-
-    for val in x_vals:
-        # Optionally snap to nearest actual data point for alignment
-        nearest = x[np.argmin(np.abs(x - val))]
-        ax.text(nearest, ymin - 0.12 * y_range, f"{val:.2f}",
-                ha='center', va='top', color='black', fontsize=10)
-                
-    # y-axis labels: min, median, max
-    y_vals = [np.min(y), np.median(y), np.max(y)]
-
-    for val in y_vals:
-        # Snap to nearest actual data point for alignment
-        nearest = y[np.argmin(np.abs(y - val))]
-        ax.text(xmin - 0.1 * x_range, nearest, f"{val:.2f}",
-                ha='right', va='center', color='black', fontsize=10)
-
+    # Min/median/max labels
+    if show_labels:
+        for val in [xmin, np.median(x), xmax]:
+            nearest = x[np.argmin(np.abs(x - val))]
+            ax.text(nearest, ymin - 0.12*y_range, f"{val:.2f}",
+                    ha='center', va='top', fontsize=10, color='black')
+        for val in [ymin, np.median(y), ymax]:
+            nearest = y[np.argmin(np.abs(y - val))]
+            ax.text(xmin - 0.08*x_range, nearest, f"{val:.2f}",
+                    ha='right', va='center', fontsize=10, color='black')
+                    
     return ax
