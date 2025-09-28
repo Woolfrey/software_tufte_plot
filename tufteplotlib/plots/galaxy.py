@@ -87,6 +87,8 @@ def galaxy_plot(x, y, z, *,
         ax.yaxis.set_visible(False)
         
     ax.set_aspect('equal')
+    
+    plt.tight_layout()
 
     return ax, im
     
