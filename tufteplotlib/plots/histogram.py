@@ -87,6 +87,8 @@ def histogram_plot(data, bins=10, *,
 
     # Bottom spine: span from first to last bar
     ax.spines['bottom'].set_bounds(bin_edges[0], bin_edges[-1])
+    ax.spines['bottom'].set_color(color)
+    
     # Hide left, top, right spines
     ax.spines['left'].set_visible(False)
     ax.spines['top'].set_visible(False)
