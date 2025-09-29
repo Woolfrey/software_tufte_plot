@@ -3,6 +3,9 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import Normalize
 from tufteplotlib.styles import apply_tufte_style
 
+####################################################################################################
+#                                         Core function                                            #
+####################################################################################################
 def galaxy_plot(x, y, z, *,
                 ax=None,
                 nx_bins=100,
@@ -92,7 +95,9 @@ def galaxy_plot(x, y, z, *,
 
     return ax, im
     
-
+####################################################################################################
+#                                    Generate minimal color bar                                    #
+####################################################################################################
 def add_min_max_colorbar(im, ax=None, label='Intensity', fontsize=10, fraction=0.046, pad=0.04, labelpad=-20):
     """
     Add a minimalist colorbar showing only the min and max of an AxesImage.
@@ -129,5 +134,37 @@ def add_min_max_colorbar(im, ax=None, label='Intensity', fontsize=10, fraction=0
     cbar.set_ticklabels([f"{vmin:.2f}", f"{vmax:.2f}"])
     cbar.outline.set_visible(False)
     cbar.set_label(label, fontsize=fontsize, labelpad=labelpad)
+    
+    plt.tight_layout()
 
     return cbar
+    
+####################################################################################################
+#                                          Test / example code                                     #
+####################################################################################################     
+def main():   
+    # Generate random galaxy data
+    n_points = 10000
+
+    # x and y positions
+    x = np.random.uniform(low=-1.0, high=1.0, size=n_points)
+    y = np.random.uniform(low=-1.0, high=1.0, size=n_points)
+    z = np.random.uniform(low= 0.0, high=1.0, size=n_points)
+
+    # Create plot
+    ax, im = galaxy_plot(x, y, z,
+                         nx_bins=100,
+                         ny_bins=100,
+                         show_xlabels=True,
+                         show_ylabels=True)
+                         
+    ax.set_xlabel("X (m)")
+    ax.set_ylabel("Y (m)")
+    ax.set_title("Space")
+    
+    cbar = add_min_max_colorbar(im, ax=ax, label='Ant Density')
+    
+    plt.show()
+
+if __name__ == "__main__":
+    main()

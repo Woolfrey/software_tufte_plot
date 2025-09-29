@@ -3,6 +3,9 @@ import matplotlib.pyplot as plt
 from tufteplotlib.styles import apply_tufte_style
 from tufteplotlib.utils import _intermediate_ticks
 
+####################################################################################################
+#                                         Core function                                            #
+####################################################################################################
 def scatter_plot(x, y, ax=None, color='black', s=20, alpha=1.0, margin=0.05, max_ticks=5, **kwargs):
     """
     Tufte-style scatter plot with exact spines and nicely rounded, equispaced ticks.
@@ -54,3 +57,26 @@ def scatter_plot(x, y, ax=None, color='black', s=20, alpha=1.0, margin=0.05, max
 
     return ax
 
+####################################################################################################
+#                                          Test / example code                                     #
+####################################################################################################     
+def main():
+
+    import random
+    from tufteplotlib.datasets import anscombe
+
+    # Pick a random dataset
+    dataset = random.choice(list(anscombe.keys()))
+    data    = anscombe[dataset]
+
+    # Split into x and y
+    x, y = data[:, 0], data[:, 1]
+
+    # Plot
+    ax = scatter_plot(x, y)
+    ax.set_title(f"Anscombe's Quartet: {dataset}")
+
+    plt.show()
+
+if __name__ == "__main__":
+    main()

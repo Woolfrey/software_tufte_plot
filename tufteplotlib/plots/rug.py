@@ -2,6 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tufteplotlib.styles import apply_tufte_style
 
+####################################################################################################
+#                                         Core function                                            #
+####################################################################################################
 def rug_plot(x, y, *,
              alpha=1.0,
              ax=None,
@@ -86,3 +89,22 @@ def rug_plot(x, y, *,
                     ha='right', va='center', fontsize=10, color='black')
                     
     return ax
+    
+####################################################################################################
+#                                          Test / example code                                     #
+####################################################################################################     
+def main():
+
+    x = np.random.normal(loc=0, scale=1, size=200)
+    y = np.random.normal(loc=0, scale=1, size=200)
+
+    ax = rug_plot(x, y, color='black', alpha=1.0)
+
+    ax.set_xlabel("Gastronomic Capacity", labelpad=20)
+    ax.set_ylabel("Satiety", labelpad=30)
+    plt.tight_layout()
+
+    plt.show()
+
+if __name__ == "__main__":
+    main()

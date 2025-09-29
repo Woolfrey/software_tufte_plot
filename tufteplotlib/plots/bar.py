@@ -3,6 +3,9 @@ import matplotlib.pyplot as plt
 from tufteplotlib.styles import apply_tufte_style
 from tufteplotlib.utils import _intermediate_ticks
 
+####################################################################################################
+#                                         Core function                                            #
+####################################################################################################
 def bar_chart(categories, values, *,
               alpha=1.0,
               ax=None,
@@ -103,3 +106,19 @@ def bar_chart(categories, values, *,
     plt.tight_layout() # Adjust
 
     return ax
+    
+####################################################################################################
+#                                          Test / example code                                     #
+####################################################################################################   
+def main():
+
+    categories = ["Satiety", "Triumvirate", "Gourmand", "Machiavellian", "Boudoir"]
+
+    values = np.random.randint(3, 20, size=len(categories))
+
+    bar_chart(categories, values, show_labels=True)
+
+    plt.show()
+
+if __name__ == "__main__":
+    main()

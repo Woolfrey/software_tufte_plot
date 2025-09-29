@@ -2,6 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tufteplotlib.styles import apply_tufte_style
 
+####################################################################################################
+#                                         Core function                                            #
+####################################################################################################
 def sparkline(y, *,
               ax=None,
               color="black",
@@ -89,3 +92,17 @@ def sparkline(y, *,
     plt.tight_layout()
     
     return ax
+    
+####################################################################################################
+#                                          Test / example code                                     #
+####################################################################################################     
+def main():
+
+    y = np.random.normal(0, 1, 30).cumsum()
+
+    sparkline(y, show_dots=True, show_labels=True)
+
+    plt.show()
+
+if __name__ == "__main__":
+    main()

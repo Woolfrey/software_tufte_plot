@@ -1,9 +1,11 @@
-# tufteplotlib/plots/histogram.py
 import numpy as np
 import matplotlib.pyplot as plt
 from tufteplotlib.styles import apply_tufte_style
 from tufteplotlib.utils import _intermediate_ticks
 
+####################################################################################################
+#                                         Core function                                            #
+####################################################################################################
 def histogram_plot(data, bins=10, *,
                    alpha=1.0,
                    ax=None,
@@ -98,3 +100,17 @@ def histogram_plot(data, bins=10, *,
     apply_tufte_style(ax)
 
     return ax
+    
+####################################################################################################
+#                                          Test / example code                                     #
+####################################################################################################     
+def main():
+
+    data = np.random.normal(loc=0.0, scale=1.0, size=100)
+
+    histogram_plot(data)
+
+    plt.show()
+
+if __name__ == "__main__":
+    main()

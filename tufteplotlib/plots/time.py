@@ -4,6 +4,9 @@ from tufteplotlib.utils import _intermediate_ticks
 import numpy as np
 from .line import line_plot  # assuming line_plot is in the same package
 
+####################################################################################################
+#                                         Core function                                            #
+####################################################################################################
 def time_series(x, y, *,
                 alpha=1.0,
                 ax=None,
@@ -12,7 +15,6 @@ def time_series(x, y, *,
                 margin=0.05,
                 max_ticks=5,
                 s=20,
-                show_dots=True,
                 **kwargs):
     """
     Tufte-style time series plot.
@@ -37,8 +39,6 @@ def time_series(x, y, *,
         Approximate number of y-axis ticks.
     s : float, optional
         Marker size for dots.
-    show_dots : bool, optional
-        Whether to draw markers at each data point.
     **kwargs : additional keyword arguments passed to line_plot.
 
     Returns
@@ -59,16 +59,15 @@ def time_series(x, y, *,
                    max_ticks=max_ticks,
                    **kwargs)
 
+    ax.scatter(x, y, s=s*5.0, color="white", alpha=alpha, zorder=2)
+    ax.scatter(x, y, s=s,     color=color,   alpha=alpha, zorder=3)
+        
     # Remove all spines
     for spine in ax.spines.values():
         spine.set_visible(False)
 
     # X-axis ticks at each data point
     ax.set_xticks(x)
-
-    # Optionally overlay dots
-    if show_dots:
-        ax.scatter(x, y, s=s, color=color, alpha=alpha, zorder=3)
 
     # Y-axis ticks next to labels
     ymin, ymax = y.min(), y.max()
@@ -80,3 +79,19 @@ def time_series(x, y, *,
     ax.tick_params(axis='x', which='both', length=5)
 
     return ax
+    
+####################################################################################################
+#                                          Test / example code                                     #
+####################################################################################################     
+def main():
+
+    t = np.linspace(0, 10, 10)
+
+    y = 5.0 * np.sin(t) + 1.0 * np.random.randn(10)
+
+    ax = time_series(t, y, max_ticks=5)
+
+    plt.show()
+
+if __name__ == "__main__":
+    main()      

@@ -3,6 +3,9 @@ import matplotlib.pyplot as plt
 from tufteplotlib.styles import apply_tufte_style
 from tufteplotlib.utils import _intermediate_ticks
 
+####################################################################################################
+#                                         Core function                                            #
+####################################################################################################
 def pareto_chart(categories, values, *,
                  alpha=1.0,
                  ax=None,
@@ -129,4 +132,35 @@ def pareto_chart(categories, values, *,
         spine.set_visible(False)
 
     plt.tight_layout()
+    
     return ax
+    
+####################################################################################################
+#                                          Test / example code                                     #
+####################################################################################################     
+def main():
+
+    categories = [
+        "Jimbo",
+        "Nelson",
+        "Dolph",
+        "Kearny",
+        "Kearny Jnr."
+    ]
+
+    np.random.seed()  # random each run
+    values = np.random.randint(1, 20, size=len(categories))
+
+    ax = pareto_chart(
+        categories,
+        values,
+        alpha=0.9,
+        bar_width=0.6,
+        show_labels=True,
+        max_ticks=5
+    )
+
+    plt.show()
+
+if __name__ == "__main__":
+    main()

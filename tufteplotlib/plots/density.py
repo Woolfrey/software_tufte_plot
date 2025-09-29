@@ -4,6 +4,9 @@ from tufteplotlib.styles import apply_tufte_style
 from tufteplotlib.utils import _intermediate_ticks
 from scipy.stats import gaussian_kde
 
+####################################################################################################
+#                                         Core function                                            #
+####################################################################################################
 def density_plot(data, *,
                  ax=None,
                  alpha=1.0,
@@ -84,3 +87,27 @@ def density_plot(data, *,
     ax.spines['right'].set_visible(False)
 
     return ax
+
+####################################################################################################
+#                                          Test / example code                                     #
+####################################################################################################     
+def main():
+    data = np.random.normal(loc=0, scale=1, size=500)
+
+    ax = density_plot(
+        data,
+        show_xlabels=True,
+        show_ylabels=True,
+        tick_width=1.0,
+        tick_length=5,
+        max_ticks=5
+    )
+
+    ax.set_xlabel("Distance")
+    ax.set_ylabel("Height")
+    ax.set_title("Sugar Pile")
+
+    plt.show()
+    
+if __name__ == "__main__":
+    main()

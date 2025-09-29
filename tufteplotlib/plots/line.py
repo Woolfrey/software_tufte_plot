@@ -3,6 +3,9 @@ from tufteplotlib.styles import apply_tufte_style
 from tufteplotlib.utils import _intermediate_ticks
 import numpy as np
 
+####################################################################################################
+#                                         Core function                                            #
+####################################################################################################
 def line_plot(x, y, *,
               ax=None, color='black', line_width=1.0,
               alpha=1.0, margin=0.05, max_ticks=5, **kwargs):
@@ -63,5 +66,25 @@ def line_plot(x, y, *,
     # Set nicely rounded ticks including min/max
     ax.set_xticks(_intermediate_ticks(xmin, xmax, max_ticks=max_ticks))
     ax.set_yticks(_intermediate_ticks(ymin, ymax, max_ticks=max_ticks))
+    
+    plt.tight_layout()
 
     return ax
+    
+####################################################################################################
+#                                          Test / example code                                     #
+####################################################################################################     
+def main():
+
+    t = np.linspace(0, 10, 200)
+
+    y = np.sin(t)
+
+    y_noisy = y + np.random.normal(0, 0.1, size=t.shape)
+
+    line_plot(t, y_noisy)
+    
+    plt.show()
+
+if __name__ == "__main__":
+    main()

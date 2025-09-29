@@ -3,6 +3,9 @@ import matplotlib.pyplot as plt
 from tufteplotlib.styles import apply_tufte_style
 from tufteplotlib.utils import _intermediate_ticks
 
+####################################################################################################
+#                                         Core function                                            #
+####################################################################################################
 def quartile_plot(categories, values, *,
                   alpha = 1.0,
                   ax = None,
@@ -113,3 +116,29 @@ def quartile_plot(categories, values, *,
     ax.spines['bottom'].set_visible(False)
 
     return ax
+    
+####################################################################################################
+#                                          Test / example code                                     #
+####################################################################################################     
+def main():
+
+    params = {
+        "Lowenstein": {"mu": 5, "sigma": 3, "n": 100},
+        "Sneed": {"mu": 6, "sigma": 2, "n": 100},
+        "Zweig": {"mu": 7, "sigma": 1, "n": 100}
+    }
+
+    categories = []
+    values = []
+
+    for cat, p in params.items():
+        data = np.random.normal(loc=p["mu"], scale=p["sigma"], size=p["n"])
+        categories.extend([cat]*p["n"])
+        values.extend(data)
+
+    ax = quartile_plot(categories, values)
+
+    plt.show()
+    
+if __name__ == "__main__":
+    main()

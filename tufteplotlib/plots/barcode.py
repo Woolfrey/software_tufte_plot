@@ -3,6 +3,9 @@ import numpy as np
 from tufteplotlib.styles import apply_tufte_style
 from tufteplotlib.utils import _intermediate_ticks
 
+####################################################################################################
+#                                         Core function                                            #
+####################################################################################################
 def barcode_plot(categories, values, *,
                  alpha=0.5,
                  ax=None,
@@ -88,3 +91,30 @@ def barcode_plot(categories, values, *,
     apply_tufte_style(ax)
 
     return ax
+    
+####################################################################################################
+#                                          Test / example code                                     #
+####################################################################################################  
+def main():
+
+    params = {
+        "Lowenstein": {"mu": 5, "sigma": 3, "n": 50},
+        "Zweig": {"mu": 7, "sigma": 1, "n": 50},
+        "Sneed": {"mu": 6, "sigma": 2, "n": 50}
+    }
+
+    categories = []
+    
+    values = []
+
+    for cat, p in params.items():
+        data = np.random.normal(loc=p["mu"], scale=p["sigma"], size=p["n"])
+        categories.extend([cat]*p["n"])
+        values.extend(data)
+
+    ax = barcode_plot(categories, values, color='black', alpha=0.7, show_labels=True)
+    
+    plt.show()
+
+if __name__ == "__main__":
+    main()

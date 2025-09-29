@@ -2,6 +2,9 @@ import numpy as np
 import warnings
 from collections import defaultdict
 
+####################################################################################################
+#                                         Core function                                            #
+####################################################################################################
 def stem_and_leaf_plot(data=None, style="plain", round_decimals=2):
     """
     Generate a stem-and-leaf table from integer or floating-point data.
@@ -104,3 +107,24 @@ def stem_and_leaf_plot(data=None, style="plain", round_decimals=2):
     else:
         raise ValueError(f"Unknown style '{style}'")
 
+####################################################################################################
+#                                          Test / example code                                     #
+####################################################################################################     
+def main():
+
+    data = np.random.randint(5,15, size=100) + np.random.rand(100)
+
+    print("\nPrint to console:\n")
+    print(stem_and_leaf_plot(data, style="plain"))
+
+    print("\nMarkdown:\n")
+    print(stem_and_leaf_plot(data, style="Markdown"))
+
+    print("\nLaTeX:\n")
+    print(stem_and_leaf_plot(data, style="LaTeX"))
+
+    print("\nCSV:\n")
+    print(stem_and_leaf_plot(data, style="CSV"))
+
+if __name__ == "__main__":
+    main()       
