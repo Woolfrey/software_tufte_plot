@@ -3,11 +3,15 @@
 **tufteplotlib** is a Python library for generating plots & graphs in a minimamilist style proposed by Edward Tufte.
 
 <p align="center">
-  <img src="doc/bar_chart_comparison.png" width="400" height="auto" loading="lazy"/>
-  <img src="doc/barcode_plot_comparison.png" width="400" height="auto" loading="lazy"/>
-  <img src="doc/density_plot_comparison.png" width="400" height="auto" loading="lazy"/>
-  <img src="doc/histogram_comparison.png" width="400" height="auto" loading="lazy"/>
-  <img src="doc/line_plot_comparison.png" width="400" height="auto" loading="lazy"/>
+  <img src="doc/bar_chart_comparison.png" width="auto" height="150" loading="lazy"/>
+  <img src="doc/barcode_plot_comparison.png" width="auto" height="150" loading="lazy"/>
+  <br>
+  <img src="doc/density_plot_comparison.png" width="auto" height="150" loading="lazy"/>
+  <img src="doc/histogram_comparison.png" width="auto" height="150" loading="lazy"/>
+  <br>
+  <img src="doc/line_plot_comparison.png" width="auto" height="150" loading="lazy"/>
+  <img src="doc/quartile_plot_comparison.png" width="auto" height="150" loading="lazy"/>
+  <img src="doc/time_series_comparison.png" width="auto" height="auto" loading="lazy"/>
 </p>
 
 
