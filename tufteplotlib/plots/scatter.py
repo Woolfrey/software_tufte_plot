@@ -6,41 +6,35 @@ from tufteplotlib.utils import _intermediate_ticks
 ####################################################################################################
 #                                         Core function                                            #
 ####################################################################################################
-def scatter_plot(x, y, ax=None, color='black', s=20, alpha=1.0, margin=0.05, max_ticks=5, **kwargs):
+def scatter_plot(x, y):
     """
-    Tufte-style scatter plot with exact spines and nicely rounded, equispaced ticks.
+    Minimal API Tufte-style scatter plot with exact spines and nicely rounded ticks.
 
-    Parameters:
-        x, y : list or array-like data
-        ax : matplotlib Axes (optional)
-        color : marker color
-        s : marker size
-        alpha : marker transparency
-        margin : fraction of extra space around min/max for axes
-        max_ticks : approximate number of interior ticks per axis
-        **kwargs : extra arguments passed to ax.scatter
+    Parameters
+    ----------
+    x, y : array-like
+        Coordinates of the scatter points.
 
-    Returns:
-        ax : matplotlib Axes with the plot
+    Returns
+    -------
+    fig : matplotlib.figure.Figure
+    ax : matplotlib.axes.Axes
     """
-    if ax is None:
-        fig, ax = plt.subplots(figsize=(5*1.618, 5))
-             
+    fig, ax = plt.subplots(figsize=(5*1.618, 5))
+
     x = np.asarray(x)
     y = np.asarray(y)
 
     # Plot scatter points
-    ax.scatter(x, y, color=color, s=s, alpha=alpha, **kwargs)
+    ax.scatter(x, y, color='black', s=20, alpha=1.0)
 
     # Compute exact min/max
-    xmin = x.min()
-    xmax = x.max()
-    ymin = y.min()
-    ymax = y.max()
+    xmin, xmax = x.min(), x.max()
+    ymin, ymax = y.min(), y.max()
+    x_range, y_range = xmax - xmin, ymax - ymin
 
     # Add small margin for axes limits
-    x_range = xmax - xmin
-    y_range = ymax - ymin
+    margin = 0.05
     ax.set_xlim(xmin - margin * x_range, xmax + margin * x_range)
     ax.set_ylim(ymin - margin * y_range, ymax + margin * y_range)
 
@@ -52,29 +46,31 @@ def scatter_plot(x, y, ax=None, color='black', s=20, alpha=1.0, margin=0.05, max
     ax.spines['left'].set_bounds(ymin, ymax)
 
     # Compute ticks including min/max and rounded interior ticks
-    ax.set_xticks(_intermediate_ticks(xmin, xmax, max_ticks=max_ticks))
-    ax.set_yticks(_intermediate_ticks(ymin, ymax, max_ticks=max_ticks))
+    ax.set_xticks(_intermediate_ticks(xmin, xmax, max_ticks=5))
+    ax.set_yticks(_intermediate_ticks(ymin, ymax, max_ticks=5))
 
-    return ax
+    plt.tight_layout()
+    return fig, ax
 
 ####################################################################################################
 #                                          Test / example code                                     #
-####################################################################################################     
+####################################################################################################
 def main():
-
     import random
     from tufteplotlib.datasets import anscombe
 
     # Pick a random dataset
     dataset = random.choice(list(anscombe.keys()))
-    data    = anscombe[dataset]
+    data = anscombe[dataset]
 
     # Split into x and y
     x, y = data[:, 0], data[:, 1]
 
     # Plot
-    ax = scatter_plot(x, y)
+    fig, ax = scatter_plot(x, y)
     ax.set_title(f"Anscombe's Quartet: {dataset}")
+    
+    plt.tight_layout()
 
     plt.show()
 

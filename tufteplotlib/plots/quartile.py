@@ -6,23 +6,23 @@ from tufteplotlib.utils import _intermediate_ticks
 ####################################################################################################
 #                                         Core function                                            #
 ####################################################################################################
-def quartile_plot(categories, values, *,
-                  alpha = 1.0,
-                  ax = None,
-                  color = "black",
-                  iqr_mask_thickness = 6.0,
-                  line_thickness = 1.0,
-                  max_ticks = 5,
-                  median_marker_size = 36,
-                  outlier_marker_size = 1,
-                  show_labels = True):
+def quartile_plot(categories, values):
     """
-    Tufte-style quartile plot using (categories, values) inputs.
-    Interquartile range is masked (blank), median is shown as a dot,
-    whiskers span non-outlier values, and outliers appear as tiny dots.
+    Minimal API Tufte-style quartile plot with IQR masking, median, whiskers, and outliers.
+
+    Parameters
+    ----------
+    categories : array-like
+        Category labels for x-axis.
+    values : array-like
+        Numeric values corresponding to each category.
+
+    Returns
+    -------
+    fig : matplotlib.figure.Figure
+    ax : matplotlib.axes.Axes
     """
-    if ax is None:
-        fig, ax = plt.subplots(figsize=(5 * 1.618, 5))
+    fig, ax = plt.subplots(figsize=(5 * 1.618, 5))
 
     categories = np.asarray(categories)
     values = np.asarray(values)
@@ -40,7 +40,6 @@ def quartile_plot(categories, values, *,
 
     bg_color = ax.get_facecolor()
 
-    # Compute stats and draw
     for cat in unique_categories:
         mask = (categories == cat)
         cat_vals = values[mask]
@@ -53,12 +52,8 @@ def quartile_plot(categories, values, *,
         upper_fence = q3 + 1.5 * iqr
 
         non_outliers = cat_vals[(cat_vals >= lower_fence) & (cat_vals <= upper_fence)]
-        if non_outliers.size > 0:
-            whisker_min = non_outliers.min()
-            whisker_max = non_outliers.max()
-        else:
-            whisker_min = cat_vals.min()
-            whisker_max = cat_vals.max()
+        whisker_min = non_outliers.min() if non_outliers.size > 0 else cat_vals.min()
+        whisker_max = non_outliers.max() if non_outliers.size > 0 else cat_vals.max()
 
         whisker_mins.append(whisker_min)
         whisker_maxs.append(whisker_max)
@@ -69,30 +64,25 @@ def quartile_plot(categories, values, *,
 
         x = cat_to_x[cat]
 
-        # thin whisker line
-        ax.vlines(x, whisker_min, whisker_max, color=color,
-                  linewidth=line_thickness, alpha=alpha, zorder=1)
+        # whiskers
+        ax.vlines(x, whisker_min, whisker_max, color='black', linewidth=1.0, zorder=1)
 
-        # thick mask over IQR
-        ax.vlines(x, q1, q3, color=bg_color,
-                  linewidth=iqr_mask_thickness, zorder=2)
+        # mask IQR
+        ax.vlines(x, q1, q3, color=bg_color, linewidth=6.0, zorder=2)
 
-        # median dot
-        ax.scatter([x], [q2], s=median_marker_size, color=color,
-                   zorder=3, alpha=alpha)
+        # median
+        ax.scatter([x], [q2], s=36, color='black', zorder=3)
 
         # outliers
         if outliers.size > 0:
-            ax.scatter(np.full(outliers.shape, x), outliers,
-                       s=outlier_marker_size, color=color,
-                       alpha=alpha, zorder=4)
+            ax.scatter(np.full(outliers.shape, x), outliers, s=1, color='black', zorder=4)
 
     # X-axis
     ax.set_xticks(range(n_cat))
     ax.set_xticklabels(unique_categories)
     ax.set_xlim(-0.5, n_cat - 0.5)
 
-    # Y-axis (now includes outliers)
+    # Y-axis including outliers
     if len(whisker_mins) == 0:
         ymin, ymax = values.min(), values.max()
     else:
@@ -103,25 +93,22 @@ def quartile_plot(categories, values, *,
     pad = 0.02 * y_range
     ax.set_ylim(ymin - pad, ymax + pad)
 
-    y_ticks = _intermediate_ticks(ymin, ymax, max_ticks=max_ticks)
+    y_ticks = _intermediate_ticks(ymin, ymax, max_ticks=5)
     ax.set_yticks(y_ticks)
-    if show_labels:
-        ax.set_yticklabels([f"{t:.2f}" for t in y_ticks])
-    else:
-        ax.set_yticklabels([])
+    ax.set_yticklabels([f"{t:.2f}" for t in y_ticks])
 
     # Tufte styling
     apply_tufte_style(ax)
     ax.spines['left'].set_visible(False)
     ax.spines['bottom'].set_visible(False)
 
-    return ax
-    
+    plt.tight_layout()
+    return fig, ax
+
 ####################################################################################################
 #                                          Test / example code                                     #
-####################################################################################################     
+####################################################################################################
 def main():
-
     params = {
         "Lowenstein": {"mu": 5, "sigma": 3, "n": 100},
         "Sneed": {"mu": 6, "sigma": 2, "n": 100},
@@ -136,9 +123,9 @@ def main():
         categories.extend([cat]*p["n"])
         values.extend(data)
 
-    ax = quartile_plot(categories, values)
-
+    fig, ax = quartile_plot(categories, values)
     plt.show()
-    
+
 if __name__ == "__main__":
     main()
+

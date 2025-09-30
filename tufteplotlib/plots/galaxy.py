@@ -7,11 +7,8 @@ from tufteplotlib.styles import apply_tufte_style
 #                                         Core function                                            #
 ####################################################################################################
 def galaxy_plot(x, y, z, *,
-                ax=None,
                 nx_bins=100,
                 ny_bins=100,
-                show_xlabels=True,
-                show_ylabels=True,
                 cmap='Greys'):
     """
     Tufte-style galaxy plot: discretize (x, y) into bins, take max(z) per bin,
@@ -39,8 +36,8 @@ def galaxy_plot(x, y, z, *,
     ax : matplotlib.axes.Axes
     im : matplotlib.image.AxesImage
     """
-    if ax is None:
-        fig, ax = plt.subplots(figsize=(5,5))
+    
+    fig, ax = plt.subplots(figsize=(5,5))
 
     x = np.asarray(x)
     y = np.asarray(y)
@@ -77,18 +74,6 @@ def galaxy_plot(x, y, z, *,
     for spine in ax.spines.values():
         spine.set_visible(False)
 
-    # X-axis ticks
-    if show_xlabels:
-        ax.xaxis.set_visible(True)
-    else:
-        ax.xaxis.set_visible(False)
-
-    # Y-axis ticks
-    if show_ylabels:
-        ax.yaxis.set_visible(True)
-    else:
-        ax.yaxis.set_visible(False)
-        
     ax.set_aspect('equal')
     
     plt.tight_layout()
@@ -142,7 +127,8 @@ def add_min_max_colorbar(im, ax=None, label='Intensity', fontsize=10, fraction=0
 ####################################################################################################
 #                                          Test / example code                                     #
 ####################################################################################################     
-def main():   
+def main():
+
     # Generate random galaxy data
     n_points = 10000
 
@@ -154,9 +140,7 @@ def main():
     # Create plot
     ax, im = galaxy_plot(x, y, z,
                          nx_bins=100,
-                         ny_bins=100,
-                         show_xlabels=True,
-                         show_ylabels=True)
+                         ny_bins=100)
                          
     ax.set_xlabel("X (m)")
     ax.set_ylabel("Y (m)")
