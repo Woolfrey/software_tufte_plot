@@ -1,31 +1,27 @@
 import numpy as np
 import warnings
 from collections import defaultdict
-import matplotlib.pyplot as plt
 
 ####################################################################################################
 #                                         Core function                                            #
 ####################################################################################################
-def stem_and_leaf_plot(data=None, output="plain", round_decimals=2, render_fig=False):
+def stem_and_leaf_plot(data=None, output="plain", round_decimals=2):
     """
     Generate a stem-and-leaf table from integer or floating-point data.
 
     Parameters
     ----------
     data : array-like
-        List or array of numbers. If None, random integers are generated.
-    output : str
-        'plain', 'Markdown', 'LaTeX', or 'CSV'
+        List or array of numbers. If None, raises ValueError.
+    output : str or None
+        'plain', 'Markdown', 'LaTeX', 'CSV', or None (skip printing).
     round_decimals : int
-        Number of decimal places for floats
-    render_fig : bool
-        If True, render the table text as a matplotlib figure.
-       
-        
+        Number of decimal places for floats.
+
     Returns
     -------
-    fig
-    ax
+    output_str : str
+        The textual representation of the stem-and-leaf table.
     """
     if data is None:
         raise ValueError("No data provided.")
@@ -35,6 +31,7 @@ def stem_and_leaf_plot(data=None, output="plain", round_decimals=2, render_fig=F
 
     # --- Organize stems and leaves ---
     if all(isinstance(x, (int, np.integer)) for x in data):
+        # integer-only handling
         for value in data:
             s = str(value)
             if len(s) == 1:
@@ -42,12 +39,12 @@ def stem_and_leaf_plot(data=None, output="plain", round_decimals=2, render_fig=F
             else:
                 stem, leaf = s[:-1], s[-1]
             stems[int(stem)].append(leaf)
-        min_stem = int(min(stems))
-        max_stem = int(max(stems))
+        min_stem, max_stem = int(min(stems)), int(max(stems))
         for stem in range(min_stem, max_stem + 1):
             stems.setdefault(stem, [])
 
-    elif all(isinstance(x, (float, np.floating)) for x in data):
+    elif all(isinstance(x, (float, np.floating)) for x in data) or all(isinstance(x, (int, np.integer)) for x in data):
+        # float (or mixed int/float) handling
         for value in data:
             stem = int(np.floor(value))
             leaf_val = value - stem
@@ -57,110 +54,70 @@ def stem_and_leaf_plot(data=None, output="plain", round_decimals=2, render_fig=F
         max_stem = int(np.floor(max(data)))
         for stem in range(min_stem, max_stem + 1):
             stems.setdefault(stem, [])
-            
+
+
     else:
-        warnings.warn("Mixed data types detected. Only pure int or pure float arrays are supported.")
-        return ""
+        warnings.warn("Mixed or unsupported data types detected. Only int or float arrays are supported.")
+        return None
 
-    # --- Format table text ---
-    max_stem_width = max(5, max(len(str(stem)) for stem in stems)) if stems else 1
+    # --- Build table data ---
+    table_data = [["Stem", "Leaves"]]
+    for stem in sorted(stems):
+        leaves = " ".join(str(l) for l in stems[stem])
+        table_data.append([str(stem), leaves])
 
+    # --- Prepare textual output ---
+    output_str = ""
     if output == "plain":
-        lines  = [f"{'Stem'.rjust(max_stem_width)} | Leaves"]
-        lines += [f"{'-----'.rjust(max_stem_width)} | -------"]
-        for stem in sorted(stems):
-            leaves = ' '.join(str(l) for l in stems[stem])
-            lines.append(f"{str(stem).rjust(max_stem_width)} | {leaves}")
-        table_text = "\n".join(lines)
+        lines = [f"{row[0].rjust(5)} | {row[1]}" for row in table_data]
+        output_str = "\n".join(lines)
 
     elif output == "Markdown":
-        lines = [f"| {'Stem'.rjust(max_stem_width)} | Leaves |"]
-        lines += ["|------:|:-------|"]
-        for stem in sorted(stems):
-            leaves = ' '.join(str(l) for l in stems[stem])
-            lines.append(f"| {str(stem).rjust(max_stem_width)} | {leaves} |")
-        table_text = "\n".join(lines)
+        lines = ["| Stem | Leaves |", "|----:|:-------|"]
+        for row in table_data[1:]:
+            lines.append(f"| {row[0].rjust(5)} | {row[1]} |")
+        output_str = "\n".join(lines)
 
     elif output == "CSV":
         lines = ["Stem,Leaves"]
-        for stem in sorted(stems):
-            leaves = ','.join(str(l) for l in stems[stem])
-            lines.append(f"{str(stem).rjust(max_stem_width)},{leaves}")
-        table_text = "\n".join(lines)
+        for row in table_data[1:]:
+            lines.append(f"{row[0]},{row[1]}")
+        output_str = "\n".join(lines)
 
     elif output == "LaTeX":
-        maxleaves = max(len(leaves) for leaves in stems.values()) if stems else 0
-        col_format = "r|" + "l" * maxleaves
-        lines = [f"\\begin{{tabular}}{{{col_format}}}"]
-        lines += [f"Stem & \multicolumn{{{maxleaves}}}{{l}}{{Leaves}} \\\\ \\hline"]
-        for stem in sorted(stems):
-            leaves = [str(l) for l in stems[stem]]
-            leaves += [""] * (maxleaves - len(leaves))
-            row = f"{stem} & " + " & ".join(leaves) + " \\\\"
-            lines.append(row)
+        max_leaves = max(len(row[1].split()) for row in table_data[1:]) if len(table_data) > 1 else 0
+        col_format = "r|" + "l" * max_leaves
+        lines = [f"\\begin{{tabular}}{{{col_format}}}",
+                 f"Stem & \\multicolumn{{{max_leaves}}}{{l}}{{Leaves}} \\\\ \\hline"]
+        for row in table_data[1:]:
+            leaves = row[1].split()
+            leaves += [""] * (max_leaves - len(leaves))
+            lines.append(f"{row[0]} & " + " & ".join(leaves) + " \\\\")
         lines.append("\\end{tabular}")
-        table_text = "\n".join(lines)
-    else:
-        if output != None:
-            raise ValueError(f"Unknown output '{output}'")
-        
-    if output:
-        print(table_text)
+        output_str = "\n".join(lines)
 
-    if render_fig:
-    
-        # I need to clean this up in future:
-        lines  = [f"{'Stem'.rjust(max_stem_width)} | Leaves"]
-        lines += [f"{'-----'.rjust(max_stem_width)} | -------"]
-        for stem in sorted(stems):
-            leaves = ' '.join(str(l) for l in stems[stem])
-            lines.append(f"{str(stem).rjust(max_stem_width)} | {leaves}")
-            
-        table_text = "\n".join(lines)
-        
-        font_size = 12  # points
-        n_rows = len(lines)
-        max_leaves = max(len(line) for line in lines)  # approximate width in characters
+    elif output is not None:
+        raise ValueError(f"Unknown output '{output}'")
 
-        # scaling factors to convert characters / font points to inches
-        row_scale = 0.016     # vertical spacing per row
-        col_scale = 0.01     # horizontal spacing per character
-
-        fig_height = font_size * n_rows * row_scale
-        fig_width  = font_size * max_leaves * col_scale
-
-        fig, ax = plt.subplots(figsize=(fig_width, fig_height))
-        ax.axis('off')
-
-        for i, line in enumerate(lines[::-1]):  # reverse: first line on top
-            ax.text(0, i, line, fontsize=font_size, fontfamily='monospace', va='top', ha='left')
-
-        ax.set_xlim(0, 1)
-        ax.set_ylim(0, len(lines))
-        plt.tight_layout()
-        
-        return fig, ax
+    return output_str
 
 ####################################################################################################
 #                                          Test / example code                                     #
 ####################################################################################################  
 def main():
-    data = np.random.randint(5,15, size=20) + np.random.rand(20)
+    data = np.random.randint(5, 15, size=20) + np.random.rand(20)
 
     print("\nPlain text:\n")
-    fig, ax = stem_and_leaf_plot(data, output="plain", render_fig=True)
+    print(stem_and_leaf_plot(data, output="plain"))
     
     print("\nMarkdown:\n")
-    stem_and_leaf_plot(data, output="Markdown")
+    print(stem_and_leaf_plot(data, output="Markdown"))
     
     print("\nLaTeX:\n")
-    stem_and_leaf_plot(data, output="LaTeX")
+    print(stem_and_leaf_plot(data, output="LaTeX"))
     
     print("\nCSV:\n")
-    stem_and_leaf_plot(data, output="CSV")
-    
-    plt.show()
+    print(stem_and_leaf_plot(data, output="CSV"))
 
 if __name__ == "__main__":
     main()
-
