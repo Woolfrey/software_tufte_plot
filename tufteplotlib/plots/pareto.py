@@ -25,9 +25,9 @@ def pareto_chart(categories, values, ax=None):
     """
     
     if ax is None:
-        fig, ax = plt.subplots(figsize=(4*1.618, 4))
+        fig, ax_bar = plt.subplots(figsize=(4*1.618, 4))
     else:
-        fig = ax.figure
+        fig = ax_bar.figure
 
     categories = np.asarray(categories)
     values = np.asarray(values, dtype=float)
