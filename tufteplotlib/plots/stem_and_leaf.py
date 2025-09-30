@@ -24,8 +24,8 @@ def stem_and_leaf_plot(data=None, output="plain", round_decimals=2, render_fig=F
         
     Returns
     -------
-    str
-        The table in the specified output.
+    fig
+    ax
     """
     if data is None:
         raise ValueError("No data provided.")
@@ -108,6 +108,16 @@ def stem_and_leaf_plot(data=None, output="plain", round_decimals=2, render_fig=F
         print(table_text)
 
     if render_fig:
+    
+        # I need to clean this up in future:
+        lines  = [f"{'Stem'.rjust(max_stem_width)} | Leaves"]
+        lines += [f"{'-----'.rjust(max_stem_width)} | -------"]
+        for stem in sorted(stems):
+            leaves = ' '.join(str(l) for l in stems[stem])
+            lines.append(f"{str(stem).rjust(max_stem_width)} | {leaves}")
+            
+        table_text = "\n".join(lines)
+        
         font_size = 12  # points
         n_rows = len(lines)
         max_leaves = max(len(line) for line in lines)  # approximate width in characters
