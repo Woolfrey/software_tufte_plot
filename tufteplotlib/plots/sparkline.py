@@ -10,7 +10,8 @@ def sparkline(y, *,
               show_labels=True,
               start_end_color="black",
               min_max_color="red",
-              dot_size=12):
+              dot_size=12,
+              ax=None):
     """
     Minimal Tufte-style sparkline with optional start/end and min/max dots.
 
@@ -28,6 +29,7 @@ def sparkline(y, *,
         Color of min and max dots.
     dot_size : float, default 12
         Marker size for the dots.
+    ax : Optional axis.
 
     Returns
     -------
@@ -36,8 +38,11 @@ def sparkline(y, *,
     """
     y = np.asarray(y)
     x = np.arange(len(y))
-
-    fig, ax = plt.subplots(figsize=(4*1.618, 1))
+  
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(4*1.618, 1))
+    else:
+        fig = ax.figure
 
     # Draw sparkline
     ax.plot(x, y, color="black", linewidth=1.0, zorder=1)

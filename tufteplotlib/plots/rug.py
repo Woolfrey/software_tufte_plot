@@ -5,7 +5,7 @@ from tufteplotlib.styles import apply_tufte_style
 ####################################################################################################
 #                                         Core function                                            #
 ####################################################################################################
-def rug_plot(x, y):
+def rug_plot(x, y, ax=None):
     """
     Minimal API Tufte-style rug plot with barcode-like ticks and optional min/median/max labels.
 
@@ -13,13 +13,18 @@ def rug_plot(x, y):
     ----------
     x, y : array-like
         Coordinates of the rug ticks.
+    ax : Optional axis.
 
     Returns
     -------
     fig : matplotlib.figure.Figure
     ax : matplotlib.axes.Axes
     """
-    fig, ax = plt.subplots(figsize=(5*1.618, 5))
+
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(4*1.618, 4))
+    else:
+        fig = ax.figure    
 
     x = np.asarray(x)
     y = np.asarray(y)

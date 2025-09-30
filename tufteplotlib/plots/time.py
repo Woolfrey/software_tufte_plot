@@ -6,7 +6,7 @@ import numpy as np
 ####################################################################################################
 #                                         Core function                                            #
 ####################################################################################################
-def time_series(x, y):
+def time_series(x, y, ax=None):
     """
     Minimal Tufte-style time series plot.
     
@@ -25,7 +25,10 @@ def time_series(x, y):
     x = np.asarray(x)
     y = np.asarray(y)
 
-    fig, ax = plt.subplots(figsize=(5*1.618, 2.5))
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(4*1.618, 2))
+    else:
+        fig = ax.figure
 
     # Draw line
     ax.plot(x, y, color='black', linewidth=1.0, alpha=1.0)
@@ -61,6 +64,7 @@ def main():
     t = np.linspace(0, 10, 10)
     y = 5.0 * np.sin(t) + 1.0 * np.random.randn(10)
     fig, ax = time_series(t, y)
+    plt.tight_layout()
     plt.show()
 
 if __name__ == "__main__":

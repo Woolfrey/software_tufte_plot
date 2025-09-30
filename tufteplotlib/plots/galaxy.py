@@ -9,7 +9,8 @@ from tufteplotlib.styles import apply_tufte_style
 def galaxy_plot(x, y, z, *,
                 nx_bins=100,
                 ny_bins=100,
-                cmap='Greys'):
+                cmap='Greys',
+                ax="None"):
     """
     Tufte-style galaxy plot: discretize (x, y) into bins, take max(z) per bin,
     and plot as a grayscale intensity map.
@@ -30,6 +31,7 @@ def galaxy_plot(x, y, z, *,
         Whether to display y-axis tick labels.
     cmap : str or Colormap
         Colormap to use (grayscale recommended).
+    ax : Optional axis
 
     Returns
     -------
@@ -37,7 +39,10 @@ def galaxy_plot(x, y, z, *,
     im : matplotlib.image.AxesImage
     """
     
-    fig, ax = plt.subplots(figsize=(5,5))
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(4*1.618, 4))
+    else:
+        fig = ax.figure
 
     x = np.asarray(x)
     y = np.asarray(y)

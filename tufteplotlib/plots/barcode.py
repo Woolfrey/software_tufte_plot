@@ -6,7 +6,7 @@ from tufteplotlib.utils import _intermediate_ticks
 ####################################################################################################
 #                                         Core function                                            #
 ####################################################################################################
-def barcode_plot(categories, values):
+def barcode_plot(categories, values, ax=None):
     """
     Minimal API Tufte-style barcode plot: horizontal lines for each data point
     in each nominal category with minimal ink. User can tweak appearance externally via ax.
@@ -17,13 +17,18 @@ def barcode_plot(categories, values):
         Sequence of categorical labels for the x-axis.
     values : array-like
         Numerical data corresponding to each category.
+    ax : matplotlib.axes.Axes, optional
+        Axis to draw on. If None, a new figure is created.
 
     Returns
     -------
     fig : matplotlib.figure.Figure
     ax : matplotlib.axes.Axes
     """
-    fig, ax = plt.subplots(figsize=(5*1.618, 5))
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(4*1.618, 4))
+    else:
+        fig = ax.figure
 
     categories = np.asarray(categories)
     values = np.asarray(values)

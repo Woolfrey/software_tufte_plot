@@ -6,7 +6,7 @@ from tufteplotlib.utils import _intermediate_ticks
 ####################################################################################################
 #                                         Core function                                            #
 ####################################################################################################
-def quartile_plot(categories, values):
+def quartile_plot(categories, values, ax=None):
     """
     Minimal API Tufte-style quartile plot with IQR masking, median, whiskers, and outliers.
 
@@ -16,13 +16,18 @@ def quartile_plot(categories, values):
         Category labels for x-axis.
     values : array-like
         Numeric values corresponding to each category.
+    ax : Optional axis.
 
     Returns
     -------
     fig : matplotlib.figure.Figure
     ax : matplotlib.axes.Axes
     """
-    fig, ax = plt.subplots(figsize=(5 * 1.618, 5))
+    
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(4*1.618, 4))
+    else:
+        fig = ax.figure
 
     categories = np.asarray(categories)
     values = np.asarray(values)

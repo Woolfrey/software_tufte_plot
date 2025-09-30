@@ -7,7 +7,7 @@ from scipy.stats import gaussian_kde
 ####################################################################################################
 #                                         Core function                                            #
 ####################################################################################################
-def density_plot(data):
+def density_plot(data, ax=None):
     """
     Minimal API Tufte-style density plot with shaded area under the curve.
     Internal axes, ticks, and limits are handled automatically.
@@ -16,13 +16,19 @@ def density_plot(data):
     ----------
     data : array-like
         1D array of numeric values.
+    ax : matplotlib.axes.Axes, optional
+        Axis to draw on. If None, a new figure is created.
 
     Returns
     -------
     fig : matplotlib.figure.Figure
     ax : matplotlib.axes.Axes
     """
-    fig, ax = plt.subplots(figsize=(5*1.618, 5))
+    
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(4*1.618, 4))
+    else:
+        fig = ax.figure
 
     data = np.asarray(data)
     kde = gaussian_kde(data)

@@ -6,7 +6,7 @@ import numpy as np
 ####################################################################################################
 #                                         Core function                                            #
 ####################################################################################################
-def line_plot(x, y):
+def line_plot(x, y, ax=None):
     """
     Minimal API Tufte-style line plot with internal ticks, margins, and spines.
 
@@ -16,13 +16,18 @@ def line_plot(x, y):
         x-values of the line.
     y : array-like
         y-values of the line.
+    ax: Optional axis
 
     Returns
     -------
     fig : matplotlib.figure.Figure
     ax : matplotlib.axes.Axes
     """
-    fig, ax = plt.subplots(figsize=(5*1.618, 2.5))
+
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(4*1.618, 2))
+    else:
+        fig = ax.figure
 
     x = np.asarray(x)
     y = np.asarray(y)

@@ -6,7 +6,7 @@ from tufteplotlib.utils import _intermediate_ticks
 ####################################################################################################
 #                                         Core function                                            #
 ####################################################################################################
-def bar_chart(categories, values):
+def bar_chart(categories, values, ax=None):
     """
     Minimal API Tufte-style bar chart. User can tweak appearance externally via ax.
 
@@ -16,13 +16,18 @@ def bar_chart(categories, values):
         Sequence of category labels for the x-axis.
     values : array-like
         Heights of the bars corresponding to each category.
+    ax : matplotlib.axes.Axes, optional
+        Axis to draw on. If None, a new figure is created.
 
     Returns
     -------
     fig : matplotlib.figure.Figure
     ax : matplotlib.axes.Axes
     """
-    fig, ax = plt.subplots(figsize=(4*1.618, 4))
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(4*1.618, 4))
+    else:
+        fig = ax.figure
 
     categories = np.asarray(categories)
     values = np.asarray(values)

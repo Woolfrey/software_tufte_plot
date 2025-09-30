@@ -14,13 +14,18 @@ def scatter_plot(x, y):
     ----------
     x, y : array-like
         Coordinates of the scatter points.
+    ax : Optional axis.
 
     Returns
     -------
     fig : matplotlib.figure.Figure
     ax : matplotlib.axes.Axes
     """
-    fig, ax = plt.subplots(figsize=(5*1.618, 5))
+     
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(4*1.618, 4))
+    else:
+        fig = ax.figure
 
     x = np.asarray(x)
     y = np.asarray(y)

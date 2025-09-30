@@ -6,7 +6,7 @@ from tufteplotlib.utils import _intermediate_ticks
 ####################################################################################################
 #                                         Core function                                            #
 ####################################################################################################
-def pareto_chart(categories, values):
+def pareto_chart(categories, values, ax=None):
     """
     Minimal API Tufte-style Pareto chart with cumulative percentage line.
 
@@ -16,13 +16,18 @@ def pareto_chart(categories, values):
         Category names.
     values : array-like
         Bar heights (can be floats).
+    ax : Optional axis
 
     Returns
     -------
     fig : matplotlib.figure.Figure
     ax : list of matplotlib.axes.Axes [ax_bar, ax_cumulative]
     """
-    fig, ax_bar = plt.subplots(figsize=(5*1.618, 5))
+    
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(4*1.618, 4))
+    else:
+        fig = ax.figure
 
     categories = np.asarray(categories)
     values = np.asarray(values, dtype=float)
@@ -113,6 +118,7 @@ def main():
     categories = ["Jimbo", "Nelson", "Dolph", "Kearny", "Kearny Jnr."]
     
     np.random.seed()
+    
     values = np.random.rand(len(categories)) * 20  # float values
     
     fig, ax = pareto_chart(categories, values)

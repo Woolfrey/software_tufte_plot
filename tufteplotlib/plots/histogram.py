@@ -6,7 +6,7 @@ from tufteplotlib.utils import _intermediate_ticks
 ####################################################################################################
 #                                         Core function                                            #
 ####################################################################################################
-def histogram_plot(data, bins=10):
+def histogram_plot(data, bins=10, ax=None):
     """
     Minimal API Tufte-style histogram with internal ticks and styling.
     Automatically formats y-ticks with decimals depending on magnitude.
@@ -17,13 +17,19 @@ def histogram_plot(data, bins=10):
         Input data to histogram.
     bins : int or sequence, optional
         Number of bins or explicit bin edges. Default 10.
+    ax : matplotlib.axes.Axes, optional
+        Axis to draw on. If None, a new figure is created.
 
     Returns
     -------
     fig : matplotlib.figure.Figure
-    ax : list of matplotlib.axes.Axes [ax_hist]
+    ax : matplotlib.axes.Axes
     """
-    fig, ax_hist = plt.subplots(figsize=(4*1.618, 4))
+    if ax is None:
+        fig, ax_hist = plt.subplots(figsize=(4*1.618, 4))
+    else:
+        fig = ax.figure
+        ax_hist = ax
 
     # Compute histogram
     counts, bin_edges, patches = ax_hist.hist(
