@@ -85,24 +85,30 @@ def pareto_chart(categories, values):
     # Hide ax2 ticks
     ax2.set_yticks([])
     ax2.set_xticks([])
-    ax2.set_ylim(-cumulative_pct[0], 105)
 
     # Apply Tufte style
     apply_tufte_style(ax)
     apply_tufte_style(ax2)
 
     plt.tight_layout()
-    return fig, ax
+    
+    return fig, [ax, ax2]
 
 ####################################################################################################
 #                                          Test / example code                                     #
 ####################################################################################################
 def main():
+
     categories = ["Jimbo", "Nelson", "Dolph", "Kearny", "Kearny Jnr."]
+    
     np.random.seed()
+    
     values = np.random.randint(1, 20, size=len(categories))
 
     fig, ax = pareto_chart(categories, values)
+    
+    ax[1].set_ylim(-50, 105) # ADJUST START POINT OF CUMULATIVE LINE  
+    
     plt.show()
 
 if __name__ == "__main__":
