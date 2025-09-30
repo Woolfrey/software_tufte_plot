@@ -48,9 +48,8 @@ def barcode_plot(categories, values, ax=None):
     ax.set_ylim(ymin, ymax)
 
     # Set x-axis labels at category positions
-    ax.set_xticks([])  # hide default ticks
-    for i, label in enumerate(unique_categories):
-        ax.text(i, ymin - 0.05*(ymax-ymin), label, ha='center', va='top', color='black')
+    ax.set_xticks(range(len(unique_categories)))
+    ax.set_xticklabels(unique_categories, fontsize=10)
 
     # Set nice y-axis ticks (min, intermediate, max)
     y_ticks = _intermediate_ticks(ymin, ymax)
