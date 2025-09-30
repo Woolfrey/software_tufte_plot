@@ -55,7 +55,7 @@ def pareto_chart(categories, values):
     if ymin < y_ticks[0]:
         y_ticks = np.insert(y_ticks, 0, ymin)
 
-    ax.set_ylim(0, ymax + 5)
+    ax.set_ylim(0, values.max()*1.1)
     ax.set_yticks([])
 
     # Draw horizontal lines and manual labels
@@ -85,6 +85,7 @@ def pareto_chart(categories, values):
     # Hide ax2 ticks
     ax2.set_yticks([])
     ax2.set_xticks([])
+    ax2.set_ylim(0, 105)
 
     # Apply Tufte style
     apply_tufte_style(ax)
@@ -106,8 +107,6 @@ def main():
     values = np.random.randint(1, 20, size=len(categories))
 
     fig, ax = pareto_chart(categories, values)
-    
-    ax[1].set_ylim(-50, 105) # ADJUST START POINT OF CUMULATIVE LINE  
     
     plt.show()
 
