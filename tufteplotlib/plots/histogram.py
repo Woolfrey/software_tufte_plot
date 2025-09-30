@@ -9,6 +9,7 @@ from tufteplotlib.utils import _intermediate_ticks
 def histogram_plot(data, bins=10):
     """
     Minimal API Tufte-style histogram with internal ticks and styling.
+    Automatically formats y-ticks with decimals depending on magnitude.
 
     Parameters
     ----------
@@ -20,12 +21,12 @@ def histogram_plot(data, bins=10):
     Returns
     -------
     fig : matplotlib.figure.Figure
-    ax : matplotlib.axes.Axes
+    ax : list of matplotlib.axes.Axes [ax_hist]
     """
-    fig, ax = plt.subplots(figsize=(4*1.618, 4))
+    fig, ax_hist = plt.subplots(figsize=(4*1.618, 4))
 
     # Compute histogram
-    counts, bin_edges, patches = ax.hist(
+    counts, bin_edges, patches = ax_hist.hist(
         data,
         bins=bins,
         alpha=1.0,
@@ -45,37 +46,53 @@ def histogram_plot(data, bins=10):
     if ymax not in y_ticks:
         y_ticks = np.append(y_ticks, ymax)
 
+    # Determine decimal places automatically
+    magnitude = max(abs(counts))
+    if magnitude < 1:
+        fmt = ".3f"
+    elif magnitude < 10:
+        fmt = ".2f"
+    else:
+        fmt = ".1f"
+
     # Set y-ticks and horizontal lines
-    ax.set_yticks(y_ticks)
-    ax.set_yticklabels([f"{int(yt)}" for yt in y_ticks])
+    ax_hist.set_yticks(y_ticks)
+    ax_hist.set_yticklabels([f"{yt:{fmt}}" for yt in y_ticks])
     for yt in y_ticks[1:]:
-        ax.hlines(yt, xmin=bin_edges[0], xmax=bin_edges[-1], color='white', linewidth=1)
+        ax_hist.hlines(yt, xmin=bin_edges[0], xmax=bin_edges[-1], color='white', linewidth=1)
 
     # X-axis default ticks
-    ax.tick_params(axis='x', rotation=0)
+    ax_hist.tick_params(axis='x', rotation=0)
 
     # Bottom spine spans bars
-    ax.spines['bottom'].set_bounds(bin_edges[0], bin_edges[-1])
-    ax.spines['bottom'].set_color([0.4, 0.4, 0.4])
+    ax_hist.spines['bottom'].set_bounds(bin_edges[0], bin_edges[-1])
+    ax_hist.spines['bottom'].set_color([0.4, 0.4, 0.4])
 
     # Hide left, top, right spines
-    ax.spines['left'].set_visible(False)
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
+    ax_hist.spines['left'].set_visible(False)
+    ax_hist.spines['top'].set_visible(False)
+    ax_hist.spines['right'].set_visible(False)
 
     # Apply Tufte style
-    apply_tufte_style(ax)
+    apply_tufte_style(ax_hist)
+    
+    ax_hist.set_ylim(0, y_ticks[-1])
 
     plt.tight_layout()
-    return fig, ax
+    
+    return fig, [ax_hist]
+
 
 ####################################################################################################
 #                                          Test / example code                                     #
 ####################################################################################################     
 def main():
     data = np.random.normal(loc=0.0, scale=1.0, size=100)
+    
     fig, ax = histogram_plot(data)
+
     plt.show()
 
 if __name__ == "__main__":
     main()
+
