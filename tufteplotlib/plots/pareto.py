@@ -106,8 +106,6 @@ def pareto_chart(categories, values, ax=None):
     # Apply Tufte style
     apply_tufte_style(ax_bar)
     apply_tufte_style(ax_cum)
-
-    plt.tight_layout()
     
     return fig, [ax_bar, ax_cum]
 
@@ -128,6 +126,7 @@ def main():
     # Example: modify cumulative axis independently
     ax[1].set_ylim(-10, 110)
     
+    plt.tight_layout()
     plt.show()
 
 if __name__ == "__main__":
