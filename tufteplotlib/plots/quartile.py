@@ -109,7 +109,6 @@ def quartile_plot(categories, values, ax=None):
     ax.spines['left'].set_visible(False)
     ax.spines['bottom'].set_visible(False)
 
-    plt.tight_layout()
     return fig, ax
 
 ####################################################################################################
@@ -131,6 +130,8 @@ def main():
         values.extend(data)
 
     fig, ax = quartile_plot(categories, values)
+    
+    plt.tight_layout()
     plt.show()
 
 if __name__ == "__main__":
