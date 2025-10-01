@@ -56,7 +56,6 @@ def line_plot(x, y, ax=None):
     ax.set_xticks(_intermediate_ticks(xmin, xmax, max_ticks=5))
     ax.set_yticks(_intermediate_ticks(ymin, ymax, max_ticks=5))
 
-    plt.tight_layout()
     return fig, ax
 
 ####################################################################################################
@@ -68,6 +67,8 @@ def main():
     y_noisy = y + np.random.normal(0, 0.1, size=t.shape)
 
     fig, ax = line_plot(t, y_noisy)
+    
+    plt.tight_layout()
     plt.show()
 
 if __name__ == "__main__":
