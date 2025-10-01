@@ -71,9 +71,7 @@ def sparkline(y, *,
     for spine in ax.spines.values():
         spine.set_visible(False)
 
-    from tufteplotlib.styles import apply_tufte_style
     apply_tufte_style(ax)
-    plt.tight_layout()
 
     return fig, ax
 
@@ -81,8 +79,12 @@ def sparkline(y, *,
 #                                          Test / example code                                     #
 ####################################################################################################     
 def main():
+
     y = np.random.normal(0, 1, 30).cumsum()
+    
     fig, ax = sparkline(y)
+    
+    plt.tight_layout()
     plt.show()
 
 if __name__ == "__main__":
