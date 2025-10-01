@@ -68,7 +68,6 @@ def rug_plot(x, y, ax=None):
         ax.text(xmin - 0.08*x_range, nearest, f"{val:.2f}",
                 ha='right', va='center', fontsize=10, color='black')
 
-    plt.tight_layout()
     return fig, ax
 
 ####################################################################################################
@@ -82,6 +81,7 @@ def main():
     
     ax.set_xlabel("Gastronomic Capacity", labelpad=20)
     ax.set_ylabel("Satiety", labelpad=30)
+    
     plt.tight_layout()
     plt.show()
 
