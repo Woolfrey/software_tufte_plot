@@ -64,7 +64,6 @@ def barcode_plot(categories, values, ax=None):
     # Apply Tufte style
     apply_tufte_style(ax)
 
-    plt.tight_layout()
     return fig, ax
 
 ####################################################################################################
@@ -89,7 +88,7 @@ def main():
 
     fig, ax = barcode_plot(categories, values)
 
-
+    plt.tight_layout()
     plt.show()
 
 if __name__ == "__main__":
