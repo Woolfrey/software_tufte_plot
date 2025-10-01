@@ -6,7 +6,7 @@ from tufteplotlib.utils import _intermediate_ticks
 ####################################################################################################
 #                                         Core function                                            #
 ####################################################################################################
-def scatter_plot(x, y):
+def scatter_plot(x, y, ax=None):
     """
     Plot individual observations between 2 data sets.
 
