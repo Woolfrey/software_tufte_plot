@@ -20,19 +20,14 @@ Tufte promotes:
 - [Contributing](#-contributing)
 - [License](#-license)
 - [Plots:](#-plots)
-  - [Bar](#bar)
-  - [Barcode](#barcode)
-  - [Density](#density)
-  - [Galaxy](#galaxy)
-  - [Histogram](#histogram)
-  - [Line](#line)
-  - [Pareto](#pareto)
-  - [Quartile](#quartile)
-  - [Rug](#rug)
-  - [Scatter](#scatter)
-  - [Sparkline](#sparkline)
-  - [Stem and Leaf](#stem-and-leaf)
-  - [Time](#time)
+
+  | Comparison            | Composition       | Distribution                    | Relationship            |
+  |-----------------------|-------------------|---------------------------------|-------------------------|
+  | [Bar](#bar)           | [Pareto](#pareto) | [Density](#density)             | [Line](#line)           |
+  | [Barcode](#barcode)   |                   | [Galaxy](#galaxy)               | [Rug](#rug)             |
+  | [Quartile](#quartile) |                   | [Histogram](#histogram)         | [Scatter](#scatter)     |
+  |                       |                   | [Stem and Leaf](#stem-and-leaf) | [Sparkline](#sparkline) |
+  |                       |                   |                                 | [Time Series](#time)    |
 
 ## 🔎 Examples
 
