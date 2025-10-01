@@ -87,7 +87,6 @@ def main():
     fig, ax = bar_chart(categories, values)
     
     plt.tight_layout()
-    
     plt.show()
 
 if __name__ == "__main__":
