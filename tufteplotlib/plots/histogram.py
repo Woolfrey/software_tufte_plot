@@ -83,8 +83,6 @@ def histogram_plot(data, bins=10, ax=None):
     apply_tufte_style(ax_hist)
     
     ax_hist.set_ylim(0, y_ticks[-1])
-
-    plt.tight_layout()
     
     return fig, [ax_hist]
 
@@ -93,10 +91,12 @@ def histogram_plot(data, bins=10, ax=None):
 #                                          Test / example code                                     #
 ####################################################################################################     
 def main():
+
     data = np.random.normal(loc=0.0, scale=1.0, size=100)
     
     fig, ax = histogram_plot(data)
-
+    
+    plt.tight_layout()
     plt.show()
 
 if __name__ == "__main__":
