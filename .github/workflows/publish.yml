@@ -1,0 +1,35 @@
+name: Publish Python Package
+
+on:
+  push:
+    # Trigger workflow only when a new tag is pushed
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-22.04
+
+    steps:
+      # 1. Check out the repo
+      - uses: actions/checkout@v4
+
+      # 2. Set up Python
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      # 3. Install build and twine
+      - run: pip install --upgrade pip build twine
+
+      # 4. Build the distribution
+      - run: python -m build
+
+      # 5. Publish to PyPI
+      - name: Publish to PyPI
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          twine upload dist/*
+
