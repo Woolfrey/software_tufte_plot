@@ -62,9 +62,12 @@ def time_series(x, y, ax=None):
 #                                          Test / example code                                     #
 ####################################################################################################     
 def main():
+
     t = np.linspace(0, 10, 10)
     y = 5.0 * np.sin(t) + 1.0 * np.random.randn(10)
+    
     fig, ax = time_series(t, y)
+    
     plt.tight_layout()
     plt.show()
 
