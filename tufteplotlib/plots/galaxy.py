@@ -146,7 +146,6 @@ def main():
     cbar.set_label('Ant Density', fontsize=10, labelpad=-10)
     
     plt.tight_layout()
-    
     plt.show()
 
 if __name__ == "__main__":
