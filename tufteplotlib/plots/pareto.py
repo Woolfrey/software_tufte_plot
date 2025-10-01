@@ -39,7 +39,7 @@ def pareto_chart(categories, values, ax=None):
     x_pos = np.arange(len(categories))
 
     # Draw bars
-    ax_bar.bar(x_pos, values, color=[0.4, 0.4, 0.4], alpha=1.0, width=0.6, bottom=0)
+    ax_bar.bar(x_pos, values, color=[0.5, 0.5, 0.5], alpha=1.0, width=0.6, bottom=0)
 
     # Cumulative percentage line with dots
     cumulative = np.cumsum(values)
