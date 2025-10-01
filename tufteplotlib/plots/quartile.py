@@ -8,7 +8,9 @@ from tufteplotlib.utils import _intermediate_ticks
 ####################################################################################################
 def quartile_plot(categories, values, ax=None):
     """
-    Minimal API Tufte-style quartile plot with IQR masking, median, whiskers, and outliers.
+    Show the distribution of data across nominal categories. Illustrates the median, interquartile
+    range, and outliers. Best used for dense data. If the data are sparse, consider using the
+    barcode plot.
 
     Parameters
     ----------

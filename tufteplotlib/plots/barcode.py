@@ -8,8 +8,8 @@ from tufteplotlib.utils import _intermediate_ticks
 ####################################################################################################
 def barcode_plot(categories, values, ax=None):
     """
-    Minimal API Tufte-style barcode plot: horizontal lines for each data point
-    in each nominal category with minimal ink. User can tweak appearance externally via ax.
+    Plot unique observations across nominal categories to show data distribution.
+    Best used for sparse data. For dense data, consider using a quartile plot.
 
     Parameters
     ----------

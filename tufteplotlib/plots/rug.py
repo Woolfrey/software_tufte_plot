@@ -7,7 +7,7 @@ from tufteplotlib.styles import apply_tufte_style
 ####################################################################################################
 def rug_plot(x, y, ax=None):
     """
-    Minimal API Tufte-style rug plot with barcode-like ticks and optional min/median/max labels.
+    A scatter plot, with a rug plot on each axis to illustrate the marginal distributions.
 
     Parameters
     ----------

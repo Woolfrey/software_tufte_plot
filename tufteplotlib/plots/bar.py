@@ -8,7 +8,7 @@ from tufteplotlib.utils import _intermediate_ticks
 ####################################################################################################
 def bar_chart(categories, values, ax=None):
     """
-    Minimal API Tufte-style bar chart. User can tweak appearance externally via ax.
+    Plot quantities across nominal categories.
 
     Parameters
     ----------
@@ -73,7 +73,6 @@ def bar_chart(categories, values, ax=None):
     # Apply Tufte style (removes top/right spines)
     apply_tufte_style(ax)
 
-    plt.tight_layout()
     return fig, ax
 
 ####################################################################################################
@@ -86,6 +85,8 @@ def main():
     values = np.random.randint(3, 20, size=len(categories))
 
     fig, ax = bar_chart(categories, values)
+    
+    plt.tight_layout()
     
     plt.show()
 

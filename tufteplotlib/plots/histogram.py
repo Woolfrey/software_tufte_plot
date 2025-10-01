@@ -8,8 +8,8 @@ from tufteplotlib.utils import _intermediate_ticks
 ####################################################################################################
 def histogram_plot(data, bins=10, ax=None):
     """
-    Minimal API Tufte-style histogram with internal ticks and styling.
-    Automatically formats y-ticks with decimals depending on magnitude.
+    Plot the frequency of observations for a 1-dimensional data set, distributed across discretized
+    numerical categories. If the data are dense, consider using the density plot instead.
 
     Parameters
     ----------

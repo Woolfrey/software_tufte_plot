@@ -8,7 +8,8 @@ import numpy as np
 ####################################################################################################
 def line_plot(x, y, ax=None):
     """
-    Minimal API Tufte-style line plot with internal ticks, margins, and spines.
+    Plot a line defined by a 2-dimensional data set. Best used for functions, or dense time series
+    data.
 
     Parameters
     ----------

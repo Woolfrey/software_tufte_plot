@@ -8,7 +8,8 @@ import numpy as np
 ####################################################################################################
 def time_series(x, y, ax=None):
     """
-    Minimal Tufte-style time series plot.
+    Show the change in a value across individual observations, or time. Best used for sparse data.
+    For dense data, consider using a line plot.
     
     Parameters
     ----------

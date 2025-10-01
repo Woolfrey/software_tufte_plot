@@ -7,14 +7,15 @@ from collections import defaultdict
 ####################################################################################################
 def stem_and_leaf_plot(data=None, output="plain", round_decimals=2):
     """
-    Generate a stem-and-leaf table from integer or floating-point data.
+    Generate an horizontal histogram in which significant digits are used as categorical labels.
+    Best used for sparse data. For dense data, consider using the density plot.
 
     Parameters
     ----------
     data : array-like
         List or array of numbers. If None, raises ValueError.
-    output : str or None
-        'plain', 'Markdown', 'LaTeX', 'CSV', or None (skip printing).
+    output : str
+        'plain', 'Markdown', 'LaTeX', 'CSV'.
     round_decimals : int
         Number of decimal places for floats.
 
@@ -73,7 +74,7 @@ def stem_and_leaf_plot(data=None, output="plain", round_decimals=2):
         output_str = "\n".join(lines)
 
     elif output == "Markdown":
-        lines = ["| Stem | Leaves |", "|----:|:-------|"]
+        lines = ["|  Stem | Leaves |", "|------:|:-------|"]
         for row in table_data[1:]:
             lines.append(f"| {row[0].rjust(5)} | {row[1]} |")
         output_str = "\n".join(lines)

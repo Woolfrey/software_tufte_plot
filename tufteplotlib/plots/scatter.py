@@ -8,7 +8,7 @@ from tufteplotlib.utils import _intermediate_ticks
 ####################################################################################################
 def scatter_plot(x, y):
     """
-    Minimal API Tufte-style scatter plot with exact spines and nicely rounded ticks.
+    Plot individual observations between 2 data sets.
 
     Parameters
     ----------

@@ -9,8 +9,8 @@ from scipy.stats import gaussian_kde
 ####################################################################################################
 def density_plot(data, ax=None):
     """
-    Minimal API Tufte-style density plot with shaded area under the curve.
-    Internal axes, ticks, and limits are handled automatically.
+    Illustrate the distribution of values within a 1-dimensional data set.
+    Best used for dense data sets. For sparse data, consider using a histogram.
 
     Parameters
     ----------

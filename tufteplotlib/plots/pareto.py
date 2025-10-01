@@ -8,7 +8,9 @@ from tufteplotlib.utils import _intermediate_ticks
 ####################################################################################################
 def pareto_chart(categories, values, ax=None):
     """
-    Minimal API Tufte-style Pareto chart with cumulative percentage line.
+    Show the contribution of nominal categories to a quantity. It contains a bar chart where categories
+    are ordered from the largest quantity, to the smallest. A cumulative percentage line is overlayed
+    to convey contribution to the whole.
 
     Parameters
     ----------

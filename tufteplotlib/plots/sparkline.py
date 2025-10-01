@@ -13,7 +13,7 @@ def sparkline(y, *,
               dot_size=12,
               ax=None):
     """
-    Minimal Tufte-style sparkline with optional start/end and min/max dots.
+    Illustrates the change in data across time. No x-axis labels are used. Best used for dense data.
 
     Parameters
     ----------
