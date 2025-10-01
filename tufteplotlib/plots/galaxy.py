@@ -10,7 +10,7 @@ def galaxy_plot(x, y, z, *,
                 nx_bins=100,
                 ny_bins=100,
                 cmap='Greys',
-                ax="None"):
+                ax=None):
     """
     Tufte-style galaxy plot: discretize (x, y) into bins, take max(z) per bin,
     and plot as a grayscale intensity map.
@@ -25,10 +25,6 @@ def galaxy_plot(x, y, z, *,
         Number of bins along x-axis.
     ny_bins : int
         Number of bins along y-axis.
-    show_xlabels : bool
-        Whether to display x-axis tick labels.
-    show_ylabels : bool
-        Whether to display y-axis tick labels.
     cmap : str or Colormap
         Colormap to use (grayscale recommended).
     ax : Optional axis
@@ -40,7 +36,7 @@ def galaxy_plot(x, y, z, *,
     """
     
     if ax is None:
-        fig, ax = plt.subplots(figsize=(4*1.618, 4))
+        fig, ax = plt.subplots(figsize=(4,3.5))
     else:
         fig = ax.figure
 
@@ -88,7 +84,10 @@ def galaxy_plot(x, y, z, *,
 ####################################################################################################
 #                                    Generate minimal color bar                                    #
 ####################################################################################################
-def add_min_max_colorbar(im, ax=None, label='Intensity', fontsize=10, fraction=0.046, pad=0.04, labelpad=-20):
+####################################################################################################
+#                                    Minimal colorbar utility                                      #
+####################################################################################################
+def add_min_max_colorbar(im, ax=None):
     """
     Add a minimalist colorbar showing only the min and max of an AxesImage.
 
@@ -97,17 +96,7 @@ def add_min_max_colorbar(im, ax=None, label='Intensity', fontsize=10, fraction=0
     im : matplotlib.image.AxesImage
         The image returned by imshow or similar.
     ax : matplotlib.axes.Axes, optional
-        Axes to associate the colorbar with. If None, uses current axes.
-    label : str
-        Label for the colorbar.
-    fontsize : int
-        Font size for the colorbar label.
-    fraction : float
-        Fraction of the original axes size for the colorbar.
-    pad : float
-        Padding between the axes and the colorbar.
-    labelpad : float
-        Offset for the colorbar label.
+        Axes to associate the colorbar with. If None, uses the current axes.
 
     Returns
     -------
@@ -117,16 +106,15 @@ def add_min_max_colorbar(im, ax=None, label='Intensity', fontsize=10, fraction=0
     if ax is None:
         ax = plt.gca()
 
+    # Get data range
     vmin, vmax = im.get_array().min(), im.get_array().max()
 
-    cbar = plt.colorbar(im, ax=ax, fraction=fraction, pad=pad)
+    # Create colorbar
+    cbar = plt.colorbar(im, ax=ax, fraction=0.05, pad=0.05)
     cbar.set_ticks([vmin, vmax])
     cbar.set_ticklabels([f"{vmin:.2f}", f"{vmax:.2f}"])
     cbar.outline.set_visible(False)
-    cbar.set_label(label, fontsize=fontsize, labelpad=labelpad)
     
-    plt.tight_layout()
-
     return cbar
     
 ####################################################################################################
@@ -150,8 +138,14 @@ def main():
     ax.set_xlabel("X (m)")
     ax.set_ylabel("Y (m)")
     ax.set_title("Space")
+        
+    # Create the colorbar (minimal)
+    cbar = add_min_max_colorbar(im, ax=ax)
+
+    # Add label outside the function
+    cbar.set_label('Ant Density', fontsize=10, labelpad=-10)
     
-    cbar = add_min_max_colorbar(im, ax=ax, label='Ant Density')
+    plt.tight_layout()
     
     plt.show()
 
