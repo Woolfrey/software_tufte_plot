@@ -54,7 +54,6 @@ def scatter_plot(x, y):
     ax.set_xticks(_intermediate_ticks(xmin, xmax, max_ticks=5))
     ax.set_yticks(_intermediate_ticks(ymin, ymax, max_ticks=5))
 
-    plt.tight_layout()
     return fig, ax
 
 ####################################################################################################
@@ -76,7 +75,6 @@ def main():
     ax.set_title(f"Anscombe's Quartet: {dataset}")
     
     plt.tight_layout()
-
     plt.show()
 
 if __name__ == "__main__":
