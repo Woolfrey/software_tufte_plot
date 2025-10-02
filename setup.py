@@ -46,6 +46,6 @@ setup(
     },
     python_requires=">=3.10",
     url="https://github.com/Woolfrey/software_tufte_plot",
-    version="1.0.0",
+    version="1.0.1",
     name="tufteplotlib",
 )

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tufteplotlib"
-version = "1.0.0"
+version = "1.0.1"
 description = "An extension to matplotlib for creating graphs in the style of Edward Tufte."
 readme = "README.md"
 authors = [
