@@ -122,13 +122,14 @@ def add_min_max_colorbar(im, ax=None):
 ####################################################################################################     
 def main():
 
-    # Generate random galaxy data
     n_points = 10000
 
-    # x and y positions
-    x = np.random.uniform(low=-1.0, high=1.0, size=n_points)
-    y = np.random.uniform(low=-1.0, high=1.0, size=n_points)
-    z = np.random.uniform(low= 0.0, high=1.0, size=n_points)
+    x = np.random.uniform(-1, 1, n_points)
+    y = np.random.uniform(-1, 1, n_points)
+
+    # Add a sinusoidal "density pattern"
+    density_mod = 0.4 * np.sin(10 * x) * np.cos(5 * y)
+    z = np.clip(np.random.uniform(0, 1, n_points) + density_mod, 0, 1)
 
     # Create plot
     ax, im = galaxy_plot(x, y, z,
