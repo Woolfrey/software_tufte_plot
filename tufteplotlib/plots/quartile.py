@@ -116,9 +116,9 @@ def quartile_plot(categories, values, ax=None):
 ####################################################################################################
 def main():
     params = {
-        "Lowenstein": {"mu": 5, "sigma": 3, "n": 100},
-        "Sneed": {"mu": 6, "sigma": 2, "n": 100},
-        "Zweig": {"mu": 7, "sigma": 1, "n": 100}
+        "Riviera" : {"mu": 5, "sigma": 3, "n": 100},
+        "Hibbert" : {"mu": 6, "sigma": 2, "n": 100},
+        "Zweig"   : {"mu": 7, "sigma": 1, "n": 100}
     }
 
     categories = []
