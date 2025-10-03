@@ -16,6 +16,7 @@ setup(
         "console_scripts": [
             "tufte-bar       = tufteplotlib.plots.bar:main",
             "tufte-barcode   = tufteplotlib.plots.barcode:main",
+            "tufte-column    = tufteplotlib.plots.column:main",
             "tufte-density   = tufteplotlib.plots.density:main",
             "tufte-galaxy    = tufteplotlib.plots.galaxy:main",
             "tufte-histogram = tufteplotlib.plots.histogram:main",
@@ -46,6 +47,6 @@ setup(
     },
     python_requires=">=3.10",
     url="https://github.com/Woolfrey/software_tufte_plot",
-    version="1.0.1",
+    version="1.1.0",
     name="tufteplotlib",
 )

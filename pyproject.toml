@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tufteplotlib"
-version = "1.0.1"
+version = "1.1.0"
 description = "An extension to matplotlib for creating graphs in the style of Edward Tufte."
 readme = "README.md"
 authors = [
@@ -27,6 +27,7 @@ dependencies = [
 [project.scripts]
 tufte-bar       = "tufteplotlib.plots.bar:main"
 tufte-barcode   = "tufteplotlib.plots.barcode:main"
+tufte-column    = "tufteplotlib.plots.column:main"
 tufte-density   = "tufteplotlib.plots.density:main"
 tufte-galaxy    = "tufteplotlib.plots.galaxy:main"
 tufte-histogram = "tufteplotlib.plots.histogram:main"
