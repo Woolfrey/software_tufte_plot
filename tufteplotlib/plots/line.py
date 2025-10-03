@@ -54,7 +54,7 @@ def line_plot(x, y, ax=None):
 
     # Set nicely rounded ticks including min/max
     ax.set_xticks(_intermediate_ticks(xmin, xmax, max_ticks=5))
-    ax.set_yticks(_intermediate_ticks(ymin, ymax, max_ticks=5))
+    ax.set_yticks(_intermediate_ticks(ymin, ymax, max_ticks=5, edge_fraction=0.07))
 
     return fig, ax
 
