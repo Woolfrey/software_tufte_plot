@@ -6,16 +6,17 @@ from tufteplotlib.utils import _intermediate_ticks
 ####################################################################################################
 #                                         Core function                                            #
 ####################################################################################################
-def bar_chart(categories, values, ax=None):
+def bar_chart(categories, quantities, ax=None):
     """
-    Plot quantities across nominal categories.
+    Plot quantities across nominal categories as horizontal bars (categories on the y-axis),
+    sorted descending (largest at top).
 
     Parameters
     ----------
     categories : array-like
-        Sequence of category labels for the x-axis.
-    values : array-like
-        Heights of the bars corresponding to each category.
+        Sequence of category labels for the y-axis.
+    quantities : array-like
+        Widths of the bars corresponding to each category.
     ax : matplotlib.axes.Axes, optional
         Axis to draw on. If None, a new figure is created.
 
@@ -30,47 +31,62 @@ def bar_chart(categories, values, ax=None):
         fig = ax.figure
 
     categories = np.asarray(categories)
-    values = np.asarray(values)
-    x_pos = np.arange(len(categories))
+    quantities = np.asarray(quantities)
 
-    # Draw bars with default minimal color
-    ax.bar(x_pos, values, color=[0.4, 0.4, 0.4])
+    # Sort categories by descending quantities (largest first)
+    order = np.argsort(quantities)[::-1]
+    categories = categories[order]
+    quantities = quantities[order]
 
-    # Set y-axis limits
-    ymin = 0
-    ymax = max(values)
-    ax.set_ylim(ymin, ymax)
+    y_pos = np.arange(len(categories))
+    ax.set_ylim(-0.35, len(categories)-0.65)  # minimal padding
 
-    # Compute y-axis ticks
-    y_ticks = [yt for yt in _intermediate_ticks(ymin, ymax, max_ticks=5) if yt != 0.0]
+    # Draw horizontal bars with the same minimal color
+    ax.barh(y_pos, quantities, color=[0.4, 0.4, 0.4])
+
+    # Set x-axis limits
+    xmin = 0
+    xmax = max(quantities)
+    ax.set_xlim(xmin, xmax)
+
+    # Compute x-axis ticks (exclude zero tick)
+    x_ticks = [xt for xt in _intermediate_ticks(xmin, xmax, max_ticks=5, edge_fraction=0.05) if xt != 0.0]
 
     # Decide if we need to add the smallest value
-    min_val = values.min()
-    add_min_label = y_ticks and (min_val < y_ticks[0])
+    min_val = quantities.min()
+    add_min_label = x_ticks and (min_val < x_ticks[0])
 
-    # Hide default ticks
-    ax.set_yticks([])
+    # Hide default x ticks
+    ax.set_xticks([])
 
-    # Draw y-axis labels and horizontal lines
-    for ytick in y_ticks:
-        ax.text(-0.5, ytick, f"{ytick:.2f}", va='center', ha='right', color='black', fontsize=10)
-        ax.hlines(ytick, -0.5, len(categories)-0.5, color='white', linewidth=1)
+    # Put the largest category at the top
+    ax.invert_yaxis()
+
+    # Get y-limits *after* inverting, so we can span the whole axis
+    y_min, y_max = ax.get_ylim()
+
+    # Draw x-axis labels + vertical helper lines
+    for xtick in x_ticks:
+        ax.text(xtick, -0.03, f"{xtick:.2f}",
+                transform=ax.get_xaxis_transform(),
+                va='top', ha='center', color='black', fontsize=10)
+        ax.vlines(xtick, y_min, y_max, color='white', linewidth=1)
 
     if add_min_label:
-        ax.text(-0.5, min_val, f"{min_val:.2f}", va='center', ha='right', color='black', fontsize=10)
+        ax.text(min_val, -0.03, f"{min_val:.2f}",
+                transform=ax.get_xaxis_transform(),
+                va='top', ha='center', color='black', fontsize=10)
 
-    # Set x-axis labels
-    ax.set_xticks(x_pos)
-    ax.set_xticklabels(categories)
+    # Set y-axis labels (categories)
+    ax.set_yticks(y_pos)
+    ax.set_yticklabels(categories)
 
-    # Hide left spine
-    ax.spines['left'].set_visible(False)
+    # Hide bottom spine and make left spine span full height
+    ax.spines['bottom'].set_visible(False)
+    ax.spines['left'].set_bounds(y_min, y_max)
+    ax.spines['left'].set_color([0.4, 0.4, 0.4])
 
-    # Set bottom spine to span only the bars
-    ax.spines['bottom'].set_bounds(x_pos[0]-0.3, x_pos[-1]+0.3)
-    ax.spines['bottom'].set_color([0.4, 0.4, 0.4])
-
-    # Apply Tufte style (removes top/right spines)
+    # Apply Tufte style (removes top/right spines etc.)
     apply_tufte_style(ax)
 
     return fig, ax
@@ -82,9 +98,9 @@ def main():
 
     categories = ["Satiety", "Triumvirate", "Gourmand", "Machiavellian", "Boudoir"]
     
-    values = np.random.randint(3, 20, size=len(categories))
+    quantities = np.random.randint(3, 20, size=len(categories))
 
-    fig, ax = bar_chart(categories, values)
+    fig, ax = bar_chart(categories, quantities)
     
     plt.tight_layout()
     plt.show()
