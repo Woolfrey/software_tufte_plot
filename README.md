@@ -21,17 +21,15 @@ Tufte promotes:
 - Contributing
 - License
 
-
-
 Here is a convenient table summarising the types of plots currently available:
 
-| Comparison   | Composition | Distribution     | Relationship  |
-|--------------|-------------|------------------|---------------|
-| Bar          | Pareto      | Density          | Line          |
-| Barcode      |             | Galaxy           | Rug           |
-| Quartile     |             | Histogram        | Scatter       |
-|              |             | Stem and Leaf    | Sparkline     |
-|              |             |                  | Time Series   |
+| Comparison | Composition | Distribution     | Relationship  |
+|------------|-------------|------------------|---------------|
+| Bar        | Pareto      | Density          | Line          |
+| Barcode    |             | Galaxy           | Rug           |
+| Column     |             | Histogram        | Scatter       |
+| Quartile   |             | Stem and Leaf    | Sparkline     |
+|            |             |                  | Time Series   |
 
 ## 🔎 Examples
 
@@ -39,8 +37,9 @@ Here is a small gallery of common plots using `tufteplotlib` on the left, versus
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Woolfrey/software_tufte_plot/master/doc/bar_chart_comparison.png" width="400" loading="lazy" alt="Bar Chart Comparison"/>
-  <br>
   <img src="https://raw.githubusercontent.com/Woolfrey/software_tufte_plot/master/doc/barcode_plot_comparison.png" width="300" loading="lazy" alt="Barcode Plot Comparison"/>
+  <br>
+  <img src="https://raw.githubusercontent.com/Woolfrey/software_tufte_plot/master/doc/column_chart_comparison.png" width="300" loading="lazy" alt="Column Chart Comparison"/>
   <img src="https://raw.githubusercontent.com/Woolfrey/software_tufte_plot/master/doc/density_plot_comparison.png" width="300" loading="lazy" alt="Density Plot Comparison"/>
   <br>
   <img src="https://raw.githubusercontent.com/Woolfrey/software_tufte_plot/master/doc/histogram_comparison.png" width="300" loading="lazy" alt="Histogram Comparison"/>
@@ -52,13 +51,17 @@ Here is a small gallery of common plots using `tufteplotlib` on the left, versus
 </p>
 
 
-
-
----
-
 ## 💾 Installation
 
-`tufteplotlib` is currently available only from GitHub. You can install it directly using:
+`tufteplotlib` is available on github and the Python Package Index (PyPI).
+
+To install from PyPI, use:
+
+```
+pip install tufteplotlib
+```
+
+To install from github, use:
 
 ```
 pip install git+https://github.com/Woolfrey/software_tufte_plot.git
@@ -82,7 +85,7 @@ and you should see something like:
 
 ```
 Name: tufteplotlib
-Version: 1.0.0
+Version: 1.1.0
 Summary: An extension to matplotlib for creating graphs in the style of Edward Tufte.
 Home-page: https://github.com/Woolfrey/software_tufte_plot
 Author: Jon Woolfrey
@@ -93,15 +96,13 @@ Requires: matplotlib, numpy, pandas
 Required-by: 
 ```
 
-You can even run commands such as `tufte-scatter`, `tufte-time` etc to execute example code.
-
-
+You can even run commands such as `tufte-scatter`, `tufte-time` etc. to execute example code.
 
 ## 📊 Plots
 
 ### Bar
 
-_Compare quantities across nominal categories._
+_Compare quantities across nominal categories, with horizontal bars, in descending order._
 
 To see a full example, run `tufte-bar` in the terminal.
 
@@ -123,8 +124,6 @@ plt.tight_layout()
 plt.show()
 ```
 
-
-
 ### Barcode
 
 _Show the distribution of observations across nominal categories._
@@ -136,7 +135,7 @@ Run `tufte-barcode` in the terminal to see an example.
 </p>
 
 > 👍 **TIP:**
-> If the data are dense, consider using the [quartile](#quartile) plot instead.
+> If the data are dense, consider using the **quartile** plot instead.
 
 Minimal implementation:
 
@@ -162,7 +161,37 @@ plt.tight_layout()
 plt.show()
 ```
 
+### Column
 
+_Compare quantities across nominal categories._
+
+Run `tufte-column` in the terminal to see an example.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Woolfrey/software_tufte_plot/master/doc/column_chart.png" width="300" height="auto" loading="lazy"/>
+</p>
+
+Minimal example:
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from tufteplotlib import column_chart
+
+# Example data
+categories = ["North\nHaverbrook", "Ogdenville", "Cypress\nCreek",
+              "Brockway", "Terror\nLake", "Cape\nFeare"]
+values = np.random.randint(3, 20, size=len(categories))
+
+# Create the Tufte column chart
+fig, ax = column_chart(categories, values)
+
+# Optional: adjust layout
+plt.tight_layout()
+
+# Show plot
+plt.show()
+```
 
 ### Density
 
@@ -175,7 +204,7 @@ Run `tufte-density` in the terminal to see an example.
 </p>
 
 > 👍 **TIP:**
-> If the data are sparse, consider using a [histogram](#histogram) instead.
+> If the data are sparse, consider using an **histogram** instead.
 
 Minimal implementation:
 
@@ -233,7 +262,7 @@ From the terminal use `tufte-histogram` to see an example.
 </p>
 
 > 👍 **TIP:**
-> If the data are dense, consider using the [density plot](#density) instead.
+> If the data are dense, consider using the **density** plot instead.
 
 Minimal implementation:
 
@@ -288,12 +317,10 @@ Use `tufte-pareto` in the terminal to see an example.
 > 👍 **TIP:**
 > The pareto rule is a heuristic that states 20% of causes produce 80% of outcomes. This chart be used to illustrate and discern the 20% of causes.
 
-
-
 > 📝 **NOTE:**
 > The pareto chart is a personal favourite. Tufte never mentioned them in his books. He did, however, criticise the use of _pie charts_ since the mapping between the angle of a slice and its quantity is nonlinear, and hence difficult to discern its true proportions. The pareto chart, in contrast:
 > 1. Preserves proportions between categories, and
-> 2. Features a cumulative % line plot showing its contribution to the total.
+> 2. Features a cumulative % on the right vertical axis for rapid inspection.
 
 Minimal implementation:
 
@@ -315,8 +342,6 @@ plt.tight_layout()
 plt.show()
 ```
 
-
-
 ### Quartile
 
 _Show the distribution of observations across nominal categories._
@@ -328,7 +353,7 @@ Use `tufte-quartile` in the terminal to see an example.
 </p>
 
 > 👍 **TIP:**
-> If the data are sparse, consider using the [barcode plot](#barcode) instead.
+> If the data are sparse, consider using the **barcode** plot instead.
 
 Minimal implementation:
 
@@ -354,8 +379,6 @@ plt.tight_layout()
 plt.show()
 ```
 
-
-
 ### Rug
 
 _Plot individual observations in a 2-dimensional dataset, with ticks on the axes to show marginal distributions._
@@ -380,8 +403,6 @@ fig, ax = rug_plot(x, y)
 plt.tight_layout()
 plt.show()
 ```
-
-
 
 ### Scatter
 
@@ -409,8 +430,6 @@ fig, ax = scatter_plot(x, y)
 plt.tight_layout()
 plt.show()
 ```
-
-
 
 ### Sparkline
 
@@ -480,7 +499,7 @@ In the terminal enter `tufte-time` to see an example.
 </p>
 
 > 👍 **TIP:**
-> If the data are dense, consider using the [line plot](#line) instead.
+> If the data are dense, consider using the **line** plot instead.
 
 Minimal implementation:
 
@@ -502,19 +521,14 @@ plt.show()
 > 📝 **NOTE:**
 > I am not a software engineer, so contributions to improving `tufteplotlib` are welcome!
 
-- **Report issues:** If you find a bug, unexpected behavior, or have a feature request, open an [issue](../../issues).  
+- **Report issues:** If you find a bug, unexpected behavior, or have a feature request, open an [issue](https://github.com/Woolfrey/software_tufte_plot/issues).  
 - **Fork & pull request:** Fork the repository, make your changes, and submit a pull request.  
 - **Code style:** Please follow the minimalist Tufte style — keep your changes clean and avoid unnecessary visual clutter.  
 - **Documentation:** Examples, explanations, and README improvements are highly appreciated.  
 - **Testing:** Ensure that your code changes do not break existing functionality. Add small example plots if relevant.
 
-
-
-
 ## 📜 License
 
 `tufteplotlib` is released under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html).  
 You are free to use, modify, and distribute this software under the terms of the GPLv3.  
-See the included [LICENSE](LICENSE) file for full details.
-
-
+See the included [LICENSE](https://github.com/Woolfrey/software_tufte_plot/blob/master/LICENSE) file for full details.
