@@ -2,6 +2,7 @@ from .datasets import anscombe
 from .plots    import add_min_max_colorbar
 from .plots    import barcode_plot
 from .plots    import bar_chart
+from .plots    import column_chart
 from .plots    import density_plot
 from .plots    import galaxy_plot
 from .plots    import histogram_plot
@@ -21,6 +22,7 @@ __all__ = ["add_min_max_colorbar",
            "apply_tufte_style",
            "barcode_plot",
            "bar_chart",
+           "column_chart",
            "density_plot",
            "histogram_plot",
            "galaxy_plot",

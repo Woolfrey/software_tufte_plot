@@ -1,5 +1,6 @@
 from .barcode       import barcode_plot
 from .bar           import bar_chart
+from .column        import column_chart
 from .density       import density_plot
 from .galaxy        import add_min_max_colorbar, galaxy_plot
 from .histogram     import histogram_plot
@@ -15,6 +16,7 @@ from .time          import time_series
 __all__ = ["add_min_max_colorbar",
            "barcode_plot",
            "bar_chart",
+           "column_chart",
            "density_plot",
            "galaxy_plot",
            "histogram_plot",
