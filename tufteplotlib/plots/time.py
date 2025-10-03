@@ -52,7 +52,7 @@ def time_series(x, y, ax=None):
 
     # Ticks
     ax.set_xticks(x)
-    ax.set_yticks(_intermediate_ticks(ymin, ymax, max_ticks=5))
+    ax.set_yticks(_intermediate_ticks(ymin, ymax, max_ticks=5, edge_fraction=0.1))
     ax.tick_params(axis='y', which='both', length=5, direction='out', color='black', width=1, pad=5)
     ax.tick_params(axis='x', which='both', length=5)
 
