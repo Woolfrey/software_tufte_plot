@@ -39,7 +39,7 @@ def histogram_plot(data, bins=10, ax=None):
         color=[0.4, 0.4, 0.4],
         edgecolor='white',
         linewidth=0.5,
-        rwidth=0.6
+        rwidth=0.7
     )
 
     # Y-axis: compute intermediate ticks
@@ -67,11 +67,17 @@ def histogram_plot(data, bins=10, ax=None):
     for yt in y_ticks[1:]:
         ax_hist.hlines(yt, xmin=bin_edges[0], xmax=bin_edges[-1], color='white', linewidth=1)
 
-    # X-axis default ticks
-    ax_hist.tick_params(axis='x', rotation=0)
+    # X-axis: Tufte-style minimal ticks (min, median, max)
+    x_min, x_max = bin_edges[0], bin_edges[-1]
+    x_median = np.median(data)
+    x_ticks = [x_min, x_median, x_max]
+
+    ax_hist.set_xticks(x_ticks)
+    ax_hist.set_xticklabels([f"{xt:.2f}" for xt in x_ticks])
+    ax_hist.tick_params(axis='x', length=2, width=0.5)
 
     # Bottom spine spans bars
-    ax_hist.spines['bottom'].set_bounds(bin_edges[0], bin_edges[-1])
+    ax_hist.spines['bottom'].set_bounds(bin_edges[0]+0.07, bin_edges[-1]-0.07)
     ax_hist.spines['bottom'].set_color([0.4, 0.4, 0.4])
 
     # Hide left, top, right spines
