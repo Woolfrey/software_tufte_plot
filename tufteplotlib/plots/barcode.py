@@ -73,8 +73,8 @@ def main():
 
     params = {
         "Lowenstein": {"mu": 5, "sigma": 3, "n": 50},
-        "Zweig": {"mu": 7, "sigma": 1, "n": 50},
-        "Sneed": {"mu": 6, "sigma": 2, "n": 50}
+        "Zweig"     : {"mu": 7, "sigma": 2, "n": 50},
+        "Monroe"    : {"mu": 6, "sigma": 1, "n": 50}
     }
 
     categories = []
