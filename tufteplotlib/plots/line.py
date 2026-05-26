@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from matplotlib.ticker import StrMethodFormatter
 from tufteplotlib.styles import apply_tufte_style
 from tufteplotlib.utils import _intermediate_ticks
 import numpy as np
@@ -6,55 +7,52 @@ import numpy as np
 ####################################################################################################
 #                                         Core function                                            #
 ####################################################################################################
-def line_plot(x, y, ax=None):
+def line_plot(x, y, ax=None, x_labels=None, linewidth=1.0, linecolor='black', autoscale=True):
     """
-    Plot a line defined by a 2-dimensional data set. Best used for functions, or dense time series
-    data.
-
-    Parameters
-    ----------
-    x : array-like
-        x-values of the line.
-    y : array-like
-        y-values of the line.
-    ax: Optional axis
-
-    Returns
-    -------
-    fig : matplotlib.figure.Figure
-    ax : matplotlib.axes.Axes
+    Plot a line defined by a 2D dataset.
     """
 
     if ax is None:
-        fig, ax = plt.subplots(figsize=(4*1.618, 2))
+        fig, ax = plt.subplots(figsize=(6, 3))
     else:
         fig = ax.figure
 
     x = np.asarray(x)
     y = np.asarray(y)
 
-    # Draw the line with default styling
-    ax.plot(x, y, color='black', linewidth=1.0, alpha=1.0)
+    ax.plot(x, y, color=linecolor, linewidth=linewidth, alpha=1.0)
 
-    # Compute exact min/max and margin
-    xmin, xmax = x.min(), x.max()
-    ymin, ymax = y.min(), y.max()
-    x_range = xmax - xmin
-    y_range = ymax - ymin
-    margin = 0.05
-    ax.set_xlim(xmin - margin*x_range, xmax + margin*x_range)
-    ax.set_ylim(ymin - margin*y_range, ymax + margin*y_range)
+    # ------------------------------------------------------------------
+    # FIX: only autoscale when explicitly enabled
+    # ------------------------------------------------------------------
+    if autoscale:
+        xmin, xmax = x.min(), x.max()
+        ymin, ymax = y.min(), y.max()
 
-    # Apply Tufte minimal style
-    apply_tufte_style(ax)
+        x_range = xmax - xmin
+        y_range = ymax - ymin
+        margin = 0.05
 
-    # Force spines to match min/max
-    ax.spines['bottom'].set_bounds(xmin, xmax)
-    ax.spines['left'].set_bounds(ymin, ymax)
+        ax.set_xlim(xmin - margin * x_range, xmax + margin * x_range)
+        ax.set_ylim(ymin - margin * y_range, ymax + margin * y_range)
 
-    # Set nicely rounded ticks including min/max
-    ax.set_xticks(_intermediate_ticks(xmin, xmax, max_ticks=5))
-    ax.set_yticks(_intermediate_ticks(ymin, ymax, max_ticks=5, edge_fraction=0.07))
+        # Apply Tufte style scaling only once per autoscale pass
+        apply_tufte_style(ax)
+
+        ax.spines['bottom'].set_bounds(xmin, xmax)
+        ax.spines['left'].set_bounds(ymin, ymax)
+
+        ax.set_xticks(_intermediate_ticks(xmin, xmax, max_ticks=5))
+        yticks = _intermediate_ticks(ymin, ymax, max_ticks=5, edge_fraction=0.07)
+        ax.set_yticks(yticks)
+
+    # Format y-axis
+    ax.yaxis.set_major_formatter(StrMethodFormatter("{x:,.0f}"))
+
+    # Optional x labels override
+    if x_labels is not None:
+        ax.set_xticks(np.arange(len(x_labels)))
+        ax.set_xticklabels(x_labels, rotation=45, ha="right")
 
     return fig, ax
 
@@ -62,12 +60,17 @@ def line_plot(x, y, ax=None):
 #                                          Test / example code                                     #
 ####################################################################################################
 def main():
-    t = np.linspace(0, 10, 200)
-    y = np.sin(t)
-    y_noisy = y + np.random.normal(0, 0.1, size=t.shape)
+    # Load sales data from CSV
+    data = np.genfromtxt("sales_data.csv", delimiter=",", skip_header=1, dtype=None, encoding=None)
+    dates = [row[0] for row in data]  # 'Date' column as strings
+    sales = np.array([float(row[1]) for row in data])  # 'Sales' column as floats
 
-    fig, ax = line_plot(t, y_noisy)
-    
+    # X-axis as numeric indices
+    x = np.arange(len(dates))
+
+    # Plot sales time series with thicker blue line
+    fig, ax = line_plot(x, sales, x_labels=dates, linewidth=2.5, linecolor='blue')
+
     plt.tight_layout()
     plt.show()
 
