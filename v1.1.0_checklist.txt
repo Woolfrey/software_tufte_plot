@@ -1,0 +1,5 @@
+Version 1.1.0
+    [x] Bar chart -> Horizontal
+    [x] Column chart -> Vertical
+    [x] Parteto chart -> Bar chart, right y axis with cumulative %
+    [x] Change histogram x ticks (to what? min, median, max?)
