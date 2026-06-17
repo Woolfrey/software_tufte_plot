@@ -29,7 +29,7 @@ Here is a convenient table summarising the types of plots currently available:
 | Barcode    |             | Galaxy           | Rug           |
 | Column     |             | Histogram        | Scatter       |
 | Quartile   |             | Stem and Leaf    | Sparkline     |
-|            |             |                  | Time Series   |
+| Slopegraph |             |                  | Time Series   |
 
 ## 🔎 Examples
 
@@ -426,6 +426,41 @@ data = anscombe[random.choice(list(anscombe.keys()))]
 x, y = data[:, 0], data[:, 1]
 
 fig, ax = scatter_plot(x, y)
+
+plt.tight_layout()
+plt.show()
+```
+
+### Slopegraph
+
+_Illustrate the difference in elements between two sets._
+
+Use `tufte-slopegraph` in the terminal to see an example.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Woolfrey/software_tufte_plot/master/doc/slopegraph.png" width="300" height="auto" loading="lazy">
+</p>
+
+Minimal implementation:
+
+```
+categories = [
+    "Transport", "Housing", "Food", "Healthcare",
+    "Education", "Energy", "Recreation", "Clothing",
+]
+before = [42, 78, 55, 30, 25, 20, 38, 20]
+after  = [39, 85, 52, 42, 22, 30, 42, 18]
+
+fig, ax = slopegraph(
+    labels=categories,
+    left=before,
+    right=after,
+    left_label="2019",
+    right_label="2024",
+    sort_by="difference",
+    highlight_top=1,
+    decimal_places=0
+)
 
 plt.tight_layout()
 plt.show()
