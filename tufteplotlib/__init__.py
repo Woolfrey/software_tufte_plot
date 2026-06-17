@@ -11,6 +11,7 @@ from .plots    import pareto_chart
 from .plots    import quartile_plot
 from .plots    import rug_plot
 from .plots    import scatter_plot
+from .plots    import slopegraph
 from .plots    import sparkline
 from .plots    import stem_and_leaf_plot
 from .plots    import time_series        
@@ -31,6 +32,7 @@ __all__ = ["add_min_max_colorbar",
            "quartile_plot",
            "rug_plot",
            "scatter_plot",
+           "slopegraph",
            "sparkline",
            "stem_and_leaf_plot",
            "time_series"]

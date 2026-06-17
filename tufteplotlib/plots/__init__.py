@@ -9,6 +9,7 @@ from .pareto        import pareto_chart
 from .quartile      import quartile_plot
 from .rug           import rug_plot
 from .scatter       import scatter_plot
+from .slopegraph    import slopegraph
 from .sparkline     import sparkline
 from .stem_and_leaf import stem_and_leaf_plot
 from .time          import time_series
