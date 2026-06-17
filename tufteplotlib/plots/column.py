@@ -6,7 +6,7 @@ from tufteplotlib.utils import _intermediate_ticks
 ####################################################################################################
 #                                         Core function                                            #
 ####################################################################################################
-def column_chart(categories, values, ax=None, labels=None, colors=None, yfmt=None):
+def column_chart(categories, values, ax=None, labels=None, colors=None, yfmt=None, sort='alpha'):
     """
     Plot quantities across nominal categories as stacked bars, automatically formatting y-axis.
 
@@ -24,6 +24,9 @@ def column_chart(categories, values, ax=None, labels=None, colors=None, yfmt=Non
         Colors for each series.
     yfmt : str, optional
         Format string for y-axis labels. If None, automatically detects integer/float.
+    sort : str, optional
+        Sort order: 'alpha' (alphabetical asc, default), 'alpha_desc', 'asc' (by total),
+        or 'desc' (by total descending).
 
     Returns
     -------
@@ -42,8 +45,18 @@ def column_chart(categories, values, ax=None, labels=None, colors=None, yfmt=Non
     if values.ndim == 1:
         values = values.reshape(1, -1)
 
-    # Sort categories alphabetically
-    order      = np.argsort(categories)
+    # Sort categories
+    totals = values.sum(axis=0)
+    if sort == 'alpha':
+        order = np.argsort(categories)
+    elif sort == 'alpha_desc':
+        order = np.argsort(categories)[::-1]
+    elif sort == 'asc':
+        order = np.argsort(totals)
+    elif sort == 'desc':
+        order = np.argsort(totals)[::-1]
+    else:
+        order = np.arange(len(categories))
     categories = categories[order]
     values     = values[:, order]
 
