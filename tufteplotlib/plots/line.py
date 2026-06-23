@@ -60,19 +60,25 @@ def line_plot(x, y, ax=None, x_labels=None, linewidth=1.0, linecolor='black', au
 #                                          Test / example code                                     #
 ####################################################################################################
 def main():
-    # Load sales data from CSV
-    data = np.genfromtxt("sales_data.csv", delimiter=",", skip_header=1, dtype=None, encoding=None)
-    dates = [row[0] for row in data]  # 'Date' column as strings
-    sales = np.array([float(row[1]) for row in data])  # 'Sales' column as floats
 
-    # X-axis as numeric indices
-    x = np.arange(len(dates))
+    # Reproducible example data
+    rng = np.random.default_rng(42)
 
-    # Plot sales time series with thicker blue line
-    fig, ax = line_plot(x, sales, x_labels=dates, linewidth=2.5, linecolor='blue')
+    x = np.arange(50)
+    y = np.cumsum(rng.normal(0, 1, len(x))) + 20
+
+    fig, ax = line_plot(
+        x,
+        y,
+        linecolor="black",
+    )
+
+    ax.set_xlabel("Observation")
+    ax.set_ylabel("Value")
 
     plt.tight_layout()
     plt.show()
+
 
 if __name__ == "__main__":
     main()
