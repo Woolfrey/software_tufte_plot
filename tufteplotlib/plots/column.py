@@ -139,13 +139,11 @@ def main():
     categories = ["North\nHaverbrook", "Ogdenville", "Cypress\nCreek", "Brockway", "Terror\nLake", "Cape\nFeare"]
 
     # Two series example
-    values = np.random.randint(3, 20, size=(2, len(categories)))
+    values = np.random.randint(3, 20, size=(1, len(categories)))
 
     fig, ax = column_chart(
         categories,
-        values,
-        labels=["Series A", "Series B"],
-        colors=[[0.24, 0.47, 0.59], [0.95, 0.71, 0.02]]
+        values
     )
     
     plt.tight_layout()
