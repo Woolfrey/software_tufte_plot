@@ -10,8 +10,8 @@ from tufteplotlib.utils import _intermediate_ticks
 def pareto_chart(categories,
                  quantities,
                  ax = None,
-                 bar_color = [0.3, 0.3, 0.3],
-                 line_color = [1.0, 0.3, 0.3]):
+                 bar_color = [0.7, 0.7, 0.7],
+                 line_color = [0.8, 0.2, 0.2]):
     """
     Vertical Pareto chart: categories on x-axis, sorted descending, with
     cumulative % overlaid as a line on the right y-axis.
@@ -104,11 +104,10 @@ def pareto_chart(categories,
     cum_percent = np.cumsum(quantities) / np.sum(quantities) * 100
 
     # Overlay cumulative % line on a twin y-axis (right)
+    
     ax_cum = ax_bar.twinx()
-    ax_cum.set_ylim(0, 105)
     ax_cum.set_xlim(ax_bar.get_xlim())
-
-    ax_cum.plot(x_pos, cum_percent, color=line_color, marker="o", linewidth=1.0)
+    ax_cum.plot(x_pos, cum_percent, color=line_color, marker=".", linewidth=1.0)
 
     # Annotate each point with its % value
     for x, y in zip(x_pos, cum_percent):
@@ -125,6 +124,7 @@ def pareto_chart(categories,
 
     # Hide all twin axis ticks and spines
     ax_cum.set_yticks([])
+    ax_cum.set_ylim([-100,105])
     ax_cum.spines['top'].set_visible(False)
     ax_cum.spines['right'].set_visible(False)
     ax_cum.spines['bottom'].set_visible(False)
