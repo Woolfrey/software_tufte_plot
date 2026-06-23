@@ -97,17 +97,9 @@ def density_plot(data, ax=None, orientation="vertical"):
 def main():
     data = np.random.normal(loc=0, scale=1, size=500)
 
-    fig, axes = plt.subplots(1, 2, figsize=(12, 4))
-
-    density_plot(data, ax=axes[0], orientation="vertical")
-    axes[0].set_title("Vertical")
-    axes[0].set_xlabel("Value")
-    axes[0].set_ylabel("Density")
-
-    density_plot(data, ax=axes[1], orientation="horizontal")
-    axes[1].set_title("Horizontal")
-    axes[1].set_xlabel("Density")
-    axes[1].set_ylabel("Value")
+    fig, ax = density_plot(data, orientation="vertical")
+    ax.set_ylabel("Height")
+    ax.set_xlabel("Dispersion")
 
     plt.tight_layout()
     plt.show()

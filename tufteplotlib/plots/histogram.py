@@ -26,42 +26,44 @@ def histogram_plot(data, bins=10, ax=None, orientation="vertical"):
     Returns
     -------
     fig : matplotlib.figure.Figure
-    ax  : list containing the single matplotlib.axes.Axes
+    ax : matplotlib.axes.Axes
     """
     if ax is None:
-        fig, ax_hist = plt.subplots(figsize=(4 * 1.618, 4))
+        fig, ax = plt.subplots(figsize=(4 * 1.618, 4))
     else:
         fig = ax.figure
-        ax_hist = ax
 
     # --- Compute bin counts and edges -----------------------------------
     counts, bin_edges = np.histogram(data, bins=bins)
 
     # --- Format string for tick labels ----------------------------------
-    # Counts are always integers; data axis uses decimal places
     count_fmt = "d"
 
-    # --- Count axis ticks (shared logic) --------------------------------
+    # --- Count axis ticks ------------------------------------------------
     cmin, cmax = counts.min(), counts.max()
     c_ticks = _intermediate_ticks(cmin, cmax, max_ticks=5)
+
     if cmin not in c_ticks:
         c_ticks = np.insert(c_ticks, 0, cmin)
     if cmax not in c_ticks:
         c_ticks = np.append(c_ticks, cmax)
 
-    # --- Data axis ticks: min, median, max ------------------------------
-    d_min, d_max = bin_edges[0], bin_edges[-1]
-    d_median     = np.median(data)
-    d_ticks      = [d_min, d_median, d_max]
+    # --- Data axis ticks -------------------------------------------------
+    d_min = bin_edges[0]
+    d_max = bin_edges[-1]
+    d_median = np.median(data)
+    d_ticks = [d_min, d_median, d_max]
 
-    # --- Bar width ------------------------------------------------------
-    bar_width = (bin_edges[1] - bin_edges[0]) * 0.7
-    bar_left  = bin_edges[:-1] + (bin_edges[1] - bin_edges[0]) * 0.15  # centre the rwidth gap
+    # --- Bar geometry ----------------------------------------------------
+    bin_width = bin_edges[1] - bin_edges[0]
+    bar_width = bin_width * 0.7
+    bar_left = bin_edges[:-1] + bin_width * 0.15
 
     if orientation == "vertical":
-        # Bars
-        ax_hist.bar(
-            bar_left, counts,
+
+        ax.bar(
+            bar_left,
+            counts,
             width=bar_width,
             align="edge",
             color=[0.4, 0.4, 0.4],
@@ -69,30 +71,42 @@ def histogram_plot(data, bins=10, ax=None, orientation="vertical"):
             linewidth=0.5,
         )
 
-        # Count axis (y): ticks + white reference lines
-        ax_hist.set_yticks(c_ticks)
-        ax_hist.set_yticklabels([f"{int(ct):{count_fmt}}" for ct in c_ticks])
-        for ct in c_ticks[1:]:
-            ax_hist.hlines(ct, xmin=bin_edges[0], xmax=bin_edges[-1],
-                           color="white", linewidth=1)
-        ax_hist.set_ylim(0, c_ticks[-1])
+        # Count axis
+        ax.set_yticks(c_ticks)
+        ax.set_yticklabels([f"{int(ct):{count_fmt}}" for ct in c_ticks])
 
-        # Data axis (x): min, median, max
-        ax_hist.set_xticks(d_ticks)
-        ax_hist.set_xticklabels([f"{dt:.2f}" for dt in d_ticks])
-        ax_hist.tick_params(axis="x", length=2, width=0.5)
+        for ct in c_ticks[1:]:
+            ax.hlines(
+                ct,
+                xmin=bin_edges[0],
+                xmax=bin_edges[-1],
+                color="white",
+                linewidth=1,
+            )
+
+        ax.set_ylim(0, c_ticks[-1])
+
+        # Data axis
+        ax.set_xticks(d_ticks)
+        ax.set_xticklabels([f"{dt:.2f}" for dt in d_ticks])
+        ax.tick_params(axis="x", length=2, width=0.5)
 
         # Spines
-        ax_hist.spines["bottom"].set_bounds(bin_edges[0] + 0.07, bin_edges[-1] - 0.07)
-        ax_hist.spines["bottom"].set_color([0.4, 0.4, 0.4])
-        ax_hist.spines["left"].set_visible(False)
-        ax_hist.spines["top"].set_visible(False)
-        ax_hist.spines["right"].set_visible(False)
+        ax.spines["bottom"].set_bounds(
+            bin_edges[0] + 0.07,
+            bin_edges[-1] - 0.07,
+        )
+        ax.spines["bottom"].set_color([0.4, 0.4, 0.4])
+
+        ax.spines["left"].set_visible(False)
+        ax.spines["top"].set_visible(False)
+        ax.spines["right"].set_visible(False)
 
     elif orientation == "horizontal":
-        # Bars drawn horizontally: data axis is y, count axis is x
-        ax_hist.barh(
-            bar_left, counts,
+
+        ax.barh(
+            bar_left,
+            counts,
             height=bar_width,
             align="edge",
             color=[0.4, 0.4, 0.4],
@@ -100,53 +114,64 @@ def histogram_plot(data, bins=10, ax=None, orientation="vertical"):
             linewidth=0.5,
         )
 
-        # Count axis (x): ticks + white reference lines
-        ax_hist.set_xticks(c_ticks)
-        ax_hist.set_xticklabels([f"{int(ct):{count_fmt}}" for ct in c_ticks])
-        for ct in c_ticks[1:]:
-            ax_hist.vlines(ct, ymin=bin_edges[0], ymax=bin_edges[-1],
-                           color="white", linewidth=1)
-        ax_hist.set_xlim(0, c_ticks[-1])
+        # Count axis
+        ax.set_xticks(c_ticks)
+        ax.set_xticklabels([f"{int(ct):{count_fmt}}" for ct in c_ticks])
 
-        # Data axis (y): min, median, max
-        ax_hist.set_yticks(d_ticks)
-        ax_hist.set_yticklabels([f"{dt:.2f}" for dt in d_ticks])
-        ax_hist.tick_params(axis="y", length=2, width=0.5)
+        for ct in c_ticks[1:]:
+            ax.vlines(
+                ct,
+                ymin=bin_edges[0],
+                ymax=bin_edges[-1],
+                color="white",
+                linewidth=1,
+            )
+
+        ax.set_xlim(0, c_ticks[-1])
+
+        # Data axis
+        ax.set_yticks(d_ticks)
+        ax.set_yticklabels([f"{dt:.2f}" for dt in d_ticks])
+        ax.tick_params(axis="y", length=2, width=0.5)
 
         # Spines
-        ax_hist.spines["left"].set_bounds(bin_edges[0] + 0.07, bin_edges[-1] - 0.07)
-        ax_hist.spines["left"].set_color([0.4, 0.4, 0.4])
-        ax_hist.spines["bottom"].set_visible(False)
-        ax_hist.spines["top"].set_visible(False)
-        ax_hist.spines["right"].set_visible(False)
+        ax.spines["left"].set_bounds(
+            bin_edges[0] + 0.07,
+            bin_edges[-1] - 0.07,
+        )
+        ax.spines["left"].set_color([0.4, 0.4, 0.4])
+
+        ax.spines["bottom"].set_visible(False)
+        ax.spines["top"].set_visible(False)
+        ax.spines["right"].set_visible(False)
 
     else:
-        raise ValueError(f"histogram_plot: orientation must be 'vertical' or 'horizontal', got {orientation!r}")
+        raise ValueError(
+            f"histogram_plot: orientation must be 'vertical' or "
+            f"'horizontal', got {orientation!r}"
+        )
 
     # Apply Tufte style
-    apply_tufte_style(ax_hist)
+    apply_tufte_style(ax)
 
-    return fig, [ax_hist]
+    return fig, ax
 
 
 ####################################################################################################
 #                                          Test / example code                                     #
 ####################################################################################################
 def main():
-    import matplotlib.pyplot as plt
 
     data = np.random.normal(loc=0.0, scale=1.0, size=100)
 
-    fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+    fig, ax = histogram_plot(data, orientation="vertical")
 
-    histogram_plot(data, ax=axes[0], orientation="vertical")
-    axes[0].set_title("Vertical")
-
-    histogram_plot(data, ax=axes[1], orientation="horizontal")
-    axes[1].set_title("Horizontal")
+    ax.set_xlabel("Value")
+    ax.set_ylabel("Count")
 
     plt.tight_layout()
     plt.show()
+
 
 if __name__ == "__main__":
     main()
