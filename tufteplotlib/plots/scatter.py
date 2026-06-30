@@ -6,7 +6,8 @@ from tufteplotlib.utils import _intermediate_ticks
 ####################################################################################################
 #                                         Core function                                            #
 ####################################################################################################
-def scatter_plot(x, y, ax=None):
+def scatter_plot(x, y, ax=None, color='black', edgecolor='none',
+                 linewidth=0.0, alpha=1.0, dot_size=20):
     """
     Plot individual observations between 2 data sets.
 
@@ -15,45 +16,54 @@ def scatter_plot(x, y, ax=None):
     x, y : array-like
         Coordinates of the scatter points.
     ax : Optional axis.
+    color : str, optional
+        Fill color of the scatter points. Default 'black'.
+    edgecolor : str, optional
+        Color of the marker edges. Default 'none' (no edge).
+    linewidth : float, optional
+        Width of the marker edges (linewidths). Default 0.0.
+    alpha : float, optional
+        Opacity of the points, between 0 and 1. Default 1.0.
+    dot_size : float, optional
+        Marker size (the 's' parameter in scatter). Default 20.
 
     Returns
     -------
     fig : matplotlib.figure.Figure
     ax : matplotlib.axes.Axes
     """
-     
+
     if ax is None:
         fig, ax = plt.subplots(figsize=(4*1.618, 4))
     else:
         fig = ax.figure
-
     x = np.asarray(x)
     y = np.asarray(y)
-
     # Plot scatter points
-    ax.scatter(x, y, color='black', s=20, alpha=1.0)
-
+    ax.scatter(
+        x, y,
+        color=color,
+        edgecolor=edgecolor,
+        linewidth=linewidth,
+        s=dot_size,
+        alpha=alpha,
+    )
     # Compute exact min/max
     xmin, xmax = x.min(), x.max()
     ymin, ymax = y.min(), y.max()
     x_range, y_range = xmax - xmin, ymax - ymin
-
     # Add small margin for axes limits
     margin = 0.05
     ax.set_xlim(xmin - margin * x_range, xmax + margin * x_range)
     ax.set_ylim(ymin - margin * y_range, ymax + margin * y_range)
-
     # Apply Tufte minimal style
     apply_tufte_style(ax)
-
     # Force spines to exactly match true min/max
     ax.spines['bottom'].set_bounds(xmin, xmax)
     ax.spines['left'].set_bounds(ymin, ymax)
-
     # Compute ticks including min/max and rounded interior ticks
     ax.set_xticks(_intermediate_ticks(xmin, xmax, max_ticks=5))
     ax.set_yticks(_intermediate_ticks(ymin, ymax, max_ticks=5))
-
     return fig, ax
 
 ####################################################################################################
