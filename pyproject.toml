@@ -1,10 +1,9 @@
 [build-system]
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
-
 [project]
 name = "tufteplotlib"
-version = "1.1.0"
+version = "1.2.0"
 description = "An extension to matplotlib for creating graphs in the style of Edward Tufte."
 readme = "README.md"
 authors = [
@@ -18,12 +17,10 @@ dependencies = [
     "numpy>=1.21",
     "pandas>=1.4",
 ]
-
 [project.urls]
 "Homepage" = "https://github.com/Woolfrey/software_tufte_plot"
 "Source" = "https://github.com/Woolfrey/software_tufte_plot"
 "Bug Reports" = "https://github.com/Woolfrey/software_tufte_plot/issues"
-
 [project.scripts]
 tufte-bar        = "tufteplotlib.plots.bar:main"
 tufte-barcode    = "tufteplotlib.plots.barcode:main"
@@ -40,6 +37,5 @@ tufte-slopegraph = "tufteplotlib.plots.slopegraph:main"
 tufte-sparkline  = "tufteplotlib.plots.sparkline:main"
 tufte-stem       = "tufteplotlib.plots.stem_and_leaf:main"
 tufte-time       = "tufteplotlib.plots.time:main"
-
 [tool.setuptools.packages.find]
 exclude = ["tests*", "examples*"]
